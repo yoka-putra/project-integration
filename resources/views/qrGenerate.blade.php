@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>QR Code Generator</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background-color: #f9f9f9;
+        }
+        #qrcode {
+            margin: 20px;
+        }
+        .sidebar-open {
+            max-width: 800px; 
+            transform: translateX(0); 
+            visibility: visible; 
+        }
+        .sidebar-closed {
+            max-width: 0;
+            transform: translateX(-100%);
+            visibility: hidden; 
+        }
+        .transition-all {
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-100 h-screen text-black">
+    <div class="flex w-screen h-screen">
+        <!-- Sidebar -->
+        <div id="sidebar" class="h-screen bg-orange-500 transition-all sidebar-closed">
+            <div class="p-4">
+                <h1 class="text-white text-2xl font-bold">SSB</h1>
+                <h2 class="text-white text-lg mt-2">Spesial Soto Boyolali</h2>
+                <h2 class="text-white text-lg">Hj. Hesti Widodo</h2>
+                <hr class="border-white my-4">
+                <ul class="mt-4 text-white">
+                    <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+                        <span class="mr-2"><i class="bi bi-list-task"></i></span>
+                        <span>Daftar Aset</span>
+                    </a>
+                    <a class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+                        <span class="mr-2"><i class="bi bi-camera"></i></span>
+                        <span>Scan Qr Code</span>
+                    </a>
+                    <details id="masterMenu" class="group hidden">
+                        <summary class="flex items-center cursor-pointer bg-orange-600 p-3 rounded-lg mb-2">
+                            <span class="mr-2"><i class="bi bi-wrench"></i></span>
+                            <span>Master</span>
+                            <i class="bi bi-chevron-down ml-auto transition-transform transform group-open:rotate-180"></i>
+                        </summary>
+                        <div class="pl-6 mt-2">
+                            <a href="{{ route('masterUser') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+                                <span class="mr-2"><i class="bi bi-people"></i></span>
+                                <span>User</span>
+                            </a>
+                            <a href="{{ route('masterAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+                                <span class="mr-2"><i class="bi bi-folder"></i></span>
+                                <span>Aset</span>
+                            </a>
+                        </div>
+                    </details>
+                    <button class="flex items-center text-white p-3 rounded-lg mb-2" id="logout">
+                        <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
+                        <span>Logout</span>
+                    </button>
+                </ul>
+            </div>
+        </div>
+<!-- Content -->
+<div class="grow p-6" id="content">
+    <div class="p-6">
+        <div class="bg-white rounded-xl p-6 flex items-center justify-between mb-4">
+            <div class="flex items-center">
+                <ion-icon id="menuToggleBtn" name="menu" class="text-3xl cursor-pointer mr-2"></ion-icon>
+                <h1 class="text-xl font-semibold">Asset Pos Manager</h1>
+            </div>
+            <div class="flex items-center">
+                <i class="bi bi-person-fill mr-2"></i>
+                <span id="user_name" class="text-xl font-semibold"></span>
+            </div>
+        </div>
+
+        <!-- Main Container with Responsive Grid -->
+        <div class="flex justify-center items-center">
+            <div class="bg-white shadow-lg rounded-lg p-6 w-full max-w-3xl">
+                <h1 class="text-xl font-bold mb-4 text-center">QR Code for Asset</h1>
+
+                <!-- Grid Layout for QR code and Asset Details -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    
+                    <!-- Asset Details Section -->
+                    <div id="assetDetails" class="bg-gray-200 p-4 rounded w-full">
+                        <p><strong>Nama Aset:</strong> <span id="assetName"></span></p>
+                        <p><strong>Merk:</strong> <span id="Merk"></span></p>
+                        <p><strong>Outlet:</strong> <span id="outlet"></span></p>
+                        <div class="mt-4">
+                            <img id="assetImage" src="" alt="Asset Image" class="rounded w-full h-50 object-cover">
+                        </div>      
+                    </div>
+
+                    <!-- QR Code Section -->
+                    <div id="qrcode" class="flex justify-center items-center rounded w-full" style="height: 256px;"></div>
+                </div>
+
+                <!-- Download Button -->
+                <div class="flex justify-end mt-4">
+                    <button id="downloadBtn" class="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-red-500">
+                        Download QR Code
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+    document.getElementById('downloadBtn').addEventListener('click', function() {
+    const qrCodeElement = qrCodeContainer.querySelector('img');
+    if (qrCodeElement) {
+        const link = document.createElement('a');
+        link.href = qrCodeElement.src;
+        link.download = `qr_${asetId}.png`; 
+        document.body.appendChild(link);
+        link.click(); 
+        document.body.removeChild(link);
+    } else {
+        alert('QR Code is not available for download.');
+    }
+});
+
+        const path = window.location.pathname;
+        const asetId = path.split('/').pop();
+
+        const qrCodeContainer = document.getElementById("qrcode");
+        const qrCode = new QRCode(qrCodeContainer, {
+            text: asetId, 
+            width: 256,
+            height: 256,
+        });
+
+        fetch(`http://127.0.0.1:8000/api/asets/get/${asetId}`, {
+            method: 'GET',
+            headers: {
+                'Authorization': 'Bearer ' + localStorage.getItem('token')
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data) {
+                document.getElementById('assetName').innerText = data.aset.aset_name || 'N/A';
+                document.getElementById('Merk').innerText = data.aset.aset_merk || 'N/A';
+                document.getElementById('outlet').innerText = data.aset.outlet.outlet_name || 'N/A';
+                if (data.aset.aset_image) {
+                document.getElementById('assetImage').src = `http://127.0.0.1:8000/storage/${data.aset.aset_image}`;
+            } else {
+            document.getElementById('assetImage').src = '';
+            document.getElementById('assetImage').alt = 'Image not available';
+            }
+            }
+        })
+        .catch(error => console.error('Error fetching asset data:', error));
+
+        const userLevel = localStorage.getItem('user_level');
+        const masterMenu = document.getElementById('masterMenu');
+
+        if (userLevel === 'IT' || userLevel === 'GA Pusat') {
+            masterMenu.classList.remove('hidden');
+        } else {
+            masterMenu.classList.add('hidden');
+        }
+
+        document.getElementById('logout').addEventListener('click', function(e) {
+            e.preventDefault();
+            const token = localStorage.getItem('token');
+            fetch('http://127.0.0.1:8000/api/logout', {
+                method: 'POST',
+                headers: {
+                    'Authorization': 'Bearer ' + token,
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.message === 'Successfully logged out') {
+                    localStorage.removeItem('user_name');
+                    localStorage.removeItem('token');
+                    localStorage.removeItem('user_level');
+                    alert('Anda berhasil logout!');
+                    window.location.href = '/login';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const user_name = localStorage.getItem('user_name') || 'Pengguna';
+            document.getElementById('user_name').innerText = user_name;
+
+            const toggleButton = document.querySelector('#menuToggleBtn');
+            const sidebar = document.querySelector('#sidebar');
+
+            toggleButton.addEventListener('click', () => {
+                sidebar.classList.toggle('sidebar-open');
+                sidebar.classList.toggle('sidebar-closed');
+            });
+        });
+
+    </script>
+</body>
+</html>
