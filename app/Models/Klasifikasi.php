@@ -19,6 +19,12 @@ class Klasifikasi extends Model
         'klasifikasi_nama',
         'klasifikasi_nilai_ekonomis',
         'jadwal_maintenance',
-        'jenis_maintenance'
+        'jenis_maintenance',
+        'parameter_kesehatan_aset'
     ];
+
+    public function jadwalMaintenance()
+    {
+        return $this->hasMany(JadwalMaintenance::class, 'klasifikasi_id', 'klasifikasi_id');
+    }
 }

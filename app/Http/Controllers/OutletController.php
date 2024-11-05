@@ -21,8 +21,9 @@ class OutletController extends Controller
     }
 
     try {
-        // Eager load 'area' and 'users' relationships
-        $outlets = Outlet::with(['area', 'users'])->get();
+        $outlets = Outlet::with(['area', 'users'])
+            ->orderBy('outlet_name', 'asc') 
+            ->get();
 
         return response()->json([
             'success' => true,
@@ -36,7 +37,6 @@ class OutletController extends Controller
         ], 500);
     }
 }
-
 
     public function createOutlet(Request $request)
     {
@@ -52,7 +52,7 @@ class OutletController extends Controller
     
         $validator = Validator::make($request->all(), [
             'outlet_name' => 'required|string|max:255|unique:outlet',
-            'outlet_area' => 'required|integer|exists:area,area_id',
+            'outlet_area' => 'nullable|integer|exists:area,area_id',
         ]);
 
         

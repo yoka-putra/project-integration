@@ -95,9 +95,8 @@ class AuthController extends Controller
             'user' => Auth::user(),
         ]);
     }
-    
 
-    public function getAllUsers()
+    public function getAllUsers(Request $request)
     {
         $user = Auth::guard('api')->user();
     
@@ -108,8 +107,21 @@ class AuthController extends Controller
             ], 401);
         }
     
-        // Mengambil semua pengguna dengan outlet yang terkait
-        $users = User::with('outlet')->get();
+        // Ambil parameter sortOrder dari query
+        $sortOrder = $request->query('sortOrder', 'asc'); // default ke 'asc'
+    
+        // Validasi nilai sortOrder
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid sort order. Use "asc" or "desc".',
+            ], 400);
+        }
+    
+        // Mengambil pengguna dengan outlet yang terkait, diurutkan berdasarkan user_id dan dengan pagination
+        $users = User::with('outlet')
+            ->orderBy('user_id', $sortOrder) // Mengurutkan berdasarkan user_id
+            ->paginate(10); // Menggunakan pagination dengan 10 data per halaman
     
         // Menghapus password dari setiap pengguna
         foreach ($users as $user) {
@@ -117,7 +129,7 @@ class AuthController extends Controller
         }
     
         return response()->json($users);
-    }
+    }    
     
 
 public function getUsers($id)
@@ -176,13 +188,13 @@ public function searchUsers(Request $request)
 
 public function updateUsers(Request $request, $id)
 {
-    // Cari pengguna berdasarkan ID
+    // Find user by ID
     $user = User::find($id);
     if (!$user) {
         return response()->json(['message' => 'User not found'], 404);
     }
 
-    // Validasi input
+    // Validate input
     $validator = Validator::make($request->all(), [
         'user_full_name' => 'required|string|max:255',
         'user_name' => 'required|string|max:100|unique:users,user_name,' . $user->user_id . ',user_id',
@@ -191,9 +203,6 @@ public function updateUsers(Request $request, $id)
         'user_area_id' => 'nullable|integer|exists:area,area_id',
         'user_outlet_id' => 'nullable|integer|exists:outlet,outlet_id',
         'has_full_access' => 'nullable|boolean',
-        'user_area_id' => 'required_without_all:user_outlet_id,has_full_access',
-        'user_outlet_id' => 'required_without_all:user_area_id,has_full_access',
-        'has_full_access' => 'required_without_all:user_area_id,user_outlet_id',
     ]);
 
     if ($validator->fails()) {
@@ -201,23 +210,26 @@ public function updateUsers(Request $request, $id)
     }
 
     try {
-        // Update data pengguna berdasarkan input
+        // Update user data based on input
         $user->user_full_name = $request->user_full_name;
         $user->user_name = $request->user_name;
         $user->user_email = $request->user_email;
         $user->user_level = $request->user_level;
-        $user->has_full_access = filter_var($request->has_full_access, FILTER_VALIDATE_BOOLEAN);
 
-        // Set user_area_id dan user_outlet_id berdasarkan kondisi has_full_access
-        if ($user->has_full_access) {
-            $user->user_area_id = null;
-            $user->user_outlet_id = null;
+        // Determine if full access is required based on the role
+        if (in_array($user->user_level, ['IT', 'Keuangan', 'GA Pusat'])) {
+            $user->has_full_access = true; // Set full access
+            $user->user_area_id = null; // Reset area ID
+            $user->user_outlet_id = null; // Reset outlet ID
         } else {
+            $user->has_full_access = filter_var($request->has_full_access, FILTER_VALIDATE_BOOLEAN);
+
+            // Set user_area_id and user_outlet_id based on provided data
             $user->user_area_id = $request->user_area_id ?? $user->user_area_id; 
-        $user->user_outlet_id = $request->user_outlet_id ?? $user->user_outlet_id; 
+            $user->user_outlet_id = $request->user_outlet_id ?? $user->user_outlet_id; 
         }
 
-        // Simpan perubahan jika ada
+        // Save changes if there are any
         if ($user->isDirty()) {
             $user->save();
             return response()->json(['message' => 'User updated successfully'], 200);

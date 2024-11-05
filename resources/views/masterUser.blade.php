@@ -37,7 +37,14 @@
                 <hr class="border-white my-4">
                 <ul class="mt-4 text-white">
                     <form class="inline">
-                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                     <form class="inline">     <a class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">         <span class="mr-2"><i class="bi bi-camera"></i></span>          <span>Scan Qr Code</span>     </a> </form>
+                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                     
+                    <form class="inline">
+    <a href="{{ route('scanQr') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+        <span class="mr-2"><i class="bi bi-camera"></i></span> 
+        <span>Scan Qr Code</span>
+    </a>
+</form>
+     
                     <details id="masterMenu" class="group hidden">
     <summary class="flex items-center cursor-pointer bg-orange-600 p-3 rounded-lg mb-2">
         <span class="mr-2"><i class="bi bi-wrench"></i></span>
@@ -95,19 +102,60 @@
 </div>
         <div class="overflow-x-auto">
         <table class="min-w-full">
-    <thead>
-        <tr class="bg-gray-100">
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Pengguna</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
-            <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
-        </tr>
-    </thead>
+        <thead>
+    <tr class="bg-gray-100">
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+            No.
+            <a href="#" id="sortAsc" class="text-gray-500 hover:text-gray-700" title="Urutkan Ascending">
+                ↑
+            </a>
+            <a href="#" id="sortDesc" class="text-gray-500 hover:text-gray-700" title="Urutkan Descending">
+                ↓
+            </a>
+        </th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Lengkap</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Pengguna</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Level</th>
+        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
+    </tr>
+</thead>
+
     <tbody class="bg-white divide-y divide-gray-200" id="userTableBody">
     </tbody>
 </table>
+
+<!-- Pagination Component -->
+<div class="flex justify-end items-center fixed bottom-4 right-4">
+  <div id="pagination" class="inline-flex items-center justify-center rounded bg-blue-600 py-1 text-white">
+    <a href="#" id="prevPage" class="inline-flex size-8 items-center justify-center">
+      <span class="sr-only">Prev Page</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+    </a>
+
+    <span class="h-4 w-px bg-white/25" aria-hidden="true"></span>
+
+    <div>
+      <label for="PaginationPage" class="sr-only">Page</label>
+      <input
+        type="number"
+        id="PaginationPage"
+        class="h-8 w-12 rounded border-none bg-transparent p-0 text-center text-xs font-medium focus:outline-none focus:ring-inset focus:ring-white"
+        min="1"
+        value="1"  
+      />
+    </div>
+
+    <a href="#" id="nextPage" class="inline-flex size-8 items-center justify-center">
+      <span class="sr-only">Next Page</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+      </svg>
+    </a>
+  </div>
+</div>
 
 <!-- Modal add user -->
 <div id="addUserModal" class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 hidden">
@@ -137,8 +185,8 @@
                 </div>
                 <div class="mb-4">
                     <label for="user_level" class="block text-sm font-medium text-gray-700">Role</label>
-                    <select id="user_level" name="user_level" required class="border border-gray-300 rounded-lg p-2 w-full">
-                        <option>Pilih Role</option>
+                    <select id="user_level" name="user_level" required class="border border-gray-300 rounded-lg p-2 w-full" onchange="handleRoleChange()">
+                        <option value="">Pilih Role</option>
                         <option value="Outlet">Outlet</option>
                         <option value="GA Pusat">GA Pusat</option>
                         <option value="GA Area">GA Area</option>
@@ -146,23 +194,40 @@
                         <option value="Keuangan">Keuangan</option>
                     </select>
                 </div>
-                <p class="text-sm text-gray-600 mb-4">
-            <strong>Catatan:</strong> Masukkan data salah satu: jika user dari outlet tertentu maka masukkan outlet, 
-            jika user mewakili area tertentu maka masukkan area, dan jika semua area pilih "All Area".
-        </p>
-                <div class="mb-4">
+
+                <div id="outletSelectContainer" class="mb-4 hidden">
                     <label for="user_outlet_id" class="block text-sm font-medium text-gray-700">Masukkan Outlet (Opsional)</label>
                     <select id="user_outlet_id" name="user_outlet_id" class="border border-gray-300 rounded-lg p-2 w-full">
                         <option value="">Pilih Outlet</option>
                     </select>
                 </div>
-                <div class="mb-4">
+                <div id="areaSelectContainer" class="mb-4 hidden">
                     <label for="user_area_id" class="block text-sm font-medium text-gray-700">Masukkan Area (Opsional)</label>
                     <select id="user_area_id" name="user_area_id" class="border border-gray-300 rounded-lg p-2 w-full">
                         <option value="">Pilih Area</option>
                         <option value="true">All Area</option>
                     </select>
                 </div>
+
+                <fieldset id="allAreaCheckboxContainer" hidden>
+  <legend class="sr-only">All Area</legend>
+
+  <div class="space-y-2">
+    <label
+      for="all_area"
+      class="flex cursor-pointer items-start gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50"
+    >
+      <div class="flex items-center">
+        <input type="checkbox" class="w-6 h-6 rounded border-gray-300" name="all_area" id="all_area" />
+      </div>
+
+      <div>
+        <strong class="font-medium text-gray-900">All Area</strong>
+      </div>
+    </label>
+  </div>
+</fieldset>
+
             </div>
             <div class="flex justify-end mt-4">
                 <button id="closeModalButton" type="button" class="mr-2 bg-red-500 text-white p-2 rounded">Batal</button>
@@ -192,7 +257,7 @@
                 </div>
                 <div class="mb-4">
                     <label for="edit_user_level" class="block text-sm font-medium text-gray-700">Role</label>
-                    <select id="edit_user_level" name="user_level" required class="border border-gray-300 rounded-lg p-2 w-full">
+                    <select id="edit_user_level" name="user_level" required class="border border-gray-300 rounded-lg p-2 w-full" onchange="handleEditRoleChange()">
                         <option value="">Pilih</option>
                         <option value="Outlet">Outlet</option>
                         <option value="GA Pusat">GA Pusat</option>
@@ -201,17 +266,28 @@
                         <option value="Keuangan">Keuangan</option>
                     </select>
                 </div>
-                <p class="text-sm text-gray-600 mb-4 col-span-1 md:col-span-2">
-                    <strong>Catatan:</strong> Masukkan data salah satu: jika user dari outlet tertentu maka masukkan outlet, 
-                    jika user mewakili area tertentu maka masukkan area, dan jika semua area pilih "All Area".
-                </p>
-                <div class="mb-4">
+                <fieldset id="hasFullAccessCheckboxContainer">
+    <legend class="sr-only">Full Access</legend>
+    <div class="space-y-2">
+        <label for="has_full_access" class="flex cursor-pointer items-start gap-4 rounded-lg border border-gray-200 p-4 transition hover:bg-gray-50">
+            <div class="flex items-center">
+                <input type="checkbox" class="w-6 h-6 rounded border-gray-300" name="has_full_access" id="has_full_access" />
+            </div>
+            <div>
+                <strong class="font-medium text-gray-900">Full Access</strong>
+            </div>
+        </label>
+    </div>
+</fieldset>
+
+
+                <div id="outletContainer" class="mb-4" hidden>
                     <label for="edit_user_outlet_id" class="block text-sm font-medium text-gray-700">Update Outlet (Opsional)</label>
                     <select id="edit_user_outlet_id" name="user_outlet_id" class="border border-gray-300 rounded-lg p-2 w-full">
                         <option value="">Pilih Outlet</option>
                     </select>
                 </div>
-                <div class="mb-4">
+                <div id="areaContainer" class="mb-4" hidden>
                     <label for="edit_user_area_id" class="block text-sm font-medium text-gray-700">Update Area (Opsional)</label>
                     <select id="edit_user_area_id" name="user_area_id" class="border border-gray-300 rounded-lg p-2 w-full">
                         <option value="">Pilih Area</option>
@@ -226,6 +302,7 @@
         </form>
     </div>
 </div>
+
                     </div>
                 </div>
             </div>
@@ -251,6 +328,28 @@ if (userLevel === 'IT' || userLevel === 'GA Pusat') {
 } else {
     // Jika tidak, sembunyikan menu
     masterMenu.classList.add('hidden');
+}
+
+function handleRoleChange() {
+    const role = document.getElementById("user_level").value;
+    const outletSelectContainer = document.getElementById("outletSelectContainer");
+    const areaSelectContainer = document.getElementById("areaSelectContainer");
+    const allAreaCheckboxContainer = document.getElementById("allAreaCheckboxContainer");
+
+    // Reset visibility
+    outletSelectContainer.classList.add("hidden");
+    areaSelectContainer.classList.add("hidden");
+    allAreaCheckboxContainer.hidden = true;  // Use .hidden attribute
+
+    // Show/hide fields based on selected role
+    if (role === "Outlet") {
+        outletSelectContainer.classList.remove("hidden");
+    } else if (role === "GA Area") {
+        areaSelectContainer.classList.remove("hidden");
+    } else if (["GA Pusat", "IT", "Keuangan"].includes(role)) {
+        allAreaCheckboxContainer.hidden = false; // Remove hidden attribute to show
+        document.getElementById("all_area").checked = true; // Automatically check "All Area"
+    }
 }
 
 document.querySelectorAll('.logout').forEach(button => {
@@ -412,51 +511,93 @@ document.addEventListener("DOMContentLoaded", function() {
         return localStorage.getItem('token');
     }
 
-    async function fetchUsers() {
-        const token = getToken();
+    let currentPage = 1; 
+    const usersPerPage = 10; 
 
-        try {
-            const response = await fetch('http://127.0.0.1:8000/api/users/get', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
-            });
-            const users = await response.json();
-            renderUsers(users);
-        } catch (error) {
-            console.error('Error fetching users:', error);
-        }
-    }
-    function renderUsers(users) {
-        tableBody.innerHTML = '';
-        users.forEach((user, index) => {
-            const row = document.createElement('tr');
-            row.innerHTML = `
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">${index + 1}</td>
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-id" style="display:none;">${user.user_id}</td>
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-full-name">${user.user_full_name}</td>
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-name">${user.user_name}</td>
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-email">${user.user_email}</td>
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level">${user.user_level}</td>
-                <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
-                     <button class="bg-yellow-500 text-white p-2 rounded edit-button" 
-                data-user_id="${user.user_id}" 
-                data-user_full_name="${user.user_full_name}" 
-                data-user_email="${user.user_email}" 
-                data-user_level="${user.user_level}" 
-                data-user_name="${user.user_name}" 
-                data-user_outlet_id="${user.user_outlet_id}"
-                data-user_area_id="${user.user_area_id}">
-            Edit
-        </button>
-        <button class="bg-red-500 text-white p-2 rounded" onclick="resetPw(${user.user_id})">Reset Password</button>
-                </td>
-            `;
-            tableBody.appendChild(row);
+async function fetchUsers(sortOrder = '', page = 1) {
+    const token = getToken(); 
+    const url = `http://127.0.0.1:8000/api/users/get?sortOrder=${sortOrder}&page=${page}`;
+
+    try {
+        const response = await fetch(url, {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
         });
+        if (!response.ok) {
+            const errorText = await response.text(); 
+            console.error(`Error fetching users: ${response.status} - ${errorText}`);
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const result = await response.json();
+        console.log('Fetched users:', result);
+
+        if (result && result.data && result.last_page !== undefined) {
+            renderUsers(result.data); 
+            updatePagination(result); 
+        } else {
+            console.error('Unexpected response structure:', result);
+        }
+    } catch (error) {
+        console.error('Error fetching asets:', error);
     }
+}
+
+function renderUsers(users) {
+    tableBody.innerHTML = ''; 
+    users.forEach((user, index) => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">${(currentPage - 1) * usersPerPage + index + 1}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-id" style="display:none;">${user.user_id}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-full-name">${user.user_full_name}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-name">${user.user_name}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-email">${user.user_email}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level">${user.user_level}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900">
+                <button class="bg-yellow-500 text-white p-2 rounded edit-button" 
+                    data-user_id="${user.user_id}" 
+                    data-user_full_name="${user.user_full_name}" 
+                    data-user_email="${user.user_email}" 
+                    data-user_level="${user.user_level}" 
+                    data-user_name="${user.user_name}" 
+                    data-user_outlet_id="${user.user_outlet_id}"
+                    data-user_area_id="${user.user_area_id}">
+                    Edit
+                </button>
+                <button class="bg-red-500 text-white p-2 rounded" onclick="resetPw(${user.user_id})">Reset Password</button>
+            </td>
+        `;
+        tableBody.appendChild(row);
+    });
+}
+
+function updatePagination(meta) {
+    if (meta && meta.last_page) {
+        document.getElementById('PaginationPage').value = currentPage; // Update current page number
+        document.getElementById('prevPage').classList.toggle('opacity-50', currentPage === 1); // Disable Prev if on first page
+        document.getElementById('nextPage').classList.toggle('opacity-50', currentPage >= meta.last_page); // Disable Next if on last page
+    } else {
+        console.error('Meta data is not defined or does not have last_page:', meta);
+    }
+}
+
+document.getElementById('prevPage').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (currentPage > 1) {
+        currentPage--;
+        fetchUsers('', currentPage);
+    }
+});
+
+document.getElementById('nextPage').addEventListener('click', function(e) {
+    e.preventDefault();
+    currentPage++;
+    fetchUsers('', currentPage);
+});
 
     searchInput.addEventListener('input', async function () {
         const searchValue = searchInput.value;
@@ -481,86 +622,127 @@ document.addEventListener("DOMContentLoaded", function() {
         }
     });
 
-    fetchUsers();
-    tableBody.addEventListener('click', (e) => {
+    // Define the handleEditRoleChange function first
+function handleEditRoleChange() {
+    const role = document.getElementById("edit_user_level").value;
+    const outletContainer = document.getElementById("outletContainer");
+    const areaContainer = document.getElementById("areaContainer");
+    const allAreaCheckboxContainer = document.getElementById("allAreaCheckboxContainer");
+    const hasFullAccessCheckbox = document.getElementById("has_full_access");
+
+    // Reset visibility
+    outletContainer.hidden = true;
+    areaContainer.hidden = true;
+    allAreaCheckboxContainer.hidden = true; // If using a separate checkbox, hide it here
+    hasFullAccessCheckbox.checked = false; // Uncheck initially
+
+    // Show/hide fields based on selected role
+    if (role === "Outlet") {
+        outletContainer.hidden = false; // Show outlet select
+    } else if (role === "GA Area") {
+        areaContainer.hidden = false; // Show area select
+    } else if (["GA Pusat", "IT", "Keuangan"].includes(role)) {
+        hasFullAccessCheckbox.checked = true; // Set has_full_access to true
+    }
+}
+
+// Ensure this is called after the DOM is fully loaded
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize event listeners
+    document.getElementById('edit_user_level').addEventListener('change', handleEditRoleChange);
+
+    // Other initialization code...
+});
+
+// Call this function on user modal show to initialize state
+function initializeEditModal() {
+    handleEditRoleChange(); // Call the handler to set initial visibility
+}
+
+
+fetchUsers();
+tableBody.addEventListener('click', (e) => {
     if (e.target.classList.contains('edit-button')) {
         const user_id = e.target.dataset.user_id;
-            const user_full_name = e.target.dataset.user_full_name;
-            const user_email = e.target.dataset.user_email;
-            const user_level = e.target.dataset.user_level;
-            const user_name = e.target.dataset.user_name;
-            const user_outlet_id = e.target.dataset.user_outlet_id; 
-            const user_area_id = e.target.dataset.user_area_id; 
+        const user_full_name = e.target.dataset.user_full_name;
+        const user_email = e.target.dataset.user_email;
+        const user_level = e.target.dataset.user_level;
+        const user_name = e.target.dataset.user_name;
+        const user_outlet_id = e.target.dataset.user_outlet_id; 
+        const user_area_id = e.target.dataset.user_area_id; 
 
-            document.getElementById('edit_user_id').value = user_id;
-            document.getElementById('edit_user_full_name').value = user_full_name;
-            document.getElementById('edit_user_email').value = user_email;
-            document.getElementById('edit_user_level').value = user_level;
-            document.getElementById('edit_user_name').value = user_name; 
-            document.getElementById('edit_user_outlet_id').value = user_outlet_id;
-            document.getElementById('edit_user_area_id').value = user_area_id;
+        document.getElementById('edit_user_id').value = user_id;
+        document.getElementById('edit_user_full_name').value = user_full_name;
+        document.getElementById('edit_user_email').value = user_email;
+        document.getElementById('edit_user_level').value = user_level;
+        document.getElementById('edit_user_name').value = user_name; 
+        document.getElementById('edit_user_outlet_id').value = user_outlet_id;
+        document.getElementById('edit_user_area_id').value = user_area_id;
+
+        // Call the initialize function to set the visibility based on the role
+        initializeEditModal();
 
         document.getElementById('editUserModal').classList.remove('hidden');
     }
 });
+
+// Close modal function
 function closeEditModal() {
     document.getElementById('editUserModal').classList.add('hidden');
 }
 
 document.getElementById('closeModalEdit').addEventListener('click', closeEditModal);
 
-    document.getElementById('editUserForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
+document.getElementById('edit_user_level').addEventListener('change', handleEditRoleChange); // Ensure to add this listener
 
-        const token = localStorage.getItem('token');
+document.getElementById('editUserForm').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const token = localStorage.getItem('token');
     if (!token) {
         alert('Token tidak ditemukan. Harap login kembali.');
         return;
     }
        
     const user_id = document.getElementById('edit_user_id').value;
-        const user_full_name = document.getElementById('edit_user_full_name').value;
-        const user_email = document.getElementById('edit_user_email').value;
-        const user_level = document.getElementById('edit_user_level').value;
-        const user_name = document.getElementById('edit_user_name').value;
-        const user_outlet_id = document.getElementById('edit_user_outlet_id').value;
-        const user_area_id = document.getElementById('edit_user_area_id').value;
+    const user_full_name = document.getElementById('edit_user_full_name').value;
+    const user_email = document.getElementById('edit_user_email').value;
+    const user_level = document.getElementById('edit_user_level').value;
+    const user_name = document.getElementById('edit_user_name').value;
+    const user_outlet_id = document.getElementById('edit_user_outlet_id').value;
+    const user_area_id = document.getElementById('edit_user_area_id').value;
 
-        // Determine has_full_access based on area selection
-        const has_full_access = user_area_id === 'true' ? '1' : '0';
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/edit/${user_id}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_full_name: user_full_name,
-                    user_email: user_email,
-                    user_level: user_level,
-                    user_outlet_id: user_outlet_id,
-                    user_area_id: user_area_id,
-                    user_name: user_name,
-                    has_full_access: has_full_access
-                })
-            });
-            if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Error updating user:', errorData);
-    alert('Gagal memperbarui pengguna: ' + errorData.message);
-}
-            if (response.ok) {
-                await fetchUsers();
-                closeEditModal();
-            } else {
-                console.error('Error updating user');
-                alert('Gagal memperbarui pengguna.');
-            }
-        } catch (error) {
-            console.error('Error updating user:', error);
+    const has_full_access = user_area_id === 'true' ? '1' : '0';
+    try {
+        const response = await fetch(`http://127.0.0.1:8000/api/users/edit/${user_id}`, {
+            method: 'PUT',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({
+                user_full_name: user_full_name,
+                user_email: user_email,
+                user_level: user_level,
+                user_outlet_id: user_outlet_id,
+                user_area_id: user_area_id,
+                user_name: user_name,
+                has_full_access: has_full_access
+            })
+        });
+        
+        if (response.ok) {
+            await fetchUsers();
+            closeEditModal();
+        } else {
+            const errorData = await response.json();
+            console.error('Error updating user:', errorData);
+            alert('Gagal memperbarui pengguna: ' + errorData.message);
         }
-    });
+    } catch (error) {
+        console.error('Error updating user:', error);
+    }
+});
 
 function openModal() {
     document.getElementById('addUserModal').classList.remove('hidden');
@@ -584,14 +766,17 @@ document.getElementById('addUserForm').addEventListener('submit', async function
 
     const formData = new FormData(this);
 
-const areaSelect = document.getElementById('user_area_id');
-if (areaSelect.value === 'true') {
-    formData.append('has_full_access', '1'); // Gunakan string '1' untuk true
+    const role = document.getElementById('user_level').value;
+if (["IT", "GA Pusat", "Keuangan"].includes(role)) {
+    formData.append('has_full_access', '1'); // Use string '1' for true
 } else {
-    formData.append('has_full_access', '0'); // Gunakan string '0' untuk false
-}
-
-    const token = localStorage.getItem('token');
+    const areaSelect = document.getElementById('user_area_id');
+    if (areaSelect.value === 'true') {
+        formData.append('has_full_access', '1'); // Use string '1' for true
+    } else {
+        formData.append('has_full_access', '0'); // Use string '0' for false
+    }
+}    const token = localStorage.getItem('token');
 
     try {
         const response = await fetch('http://127.0.0.1:8000/api/register', {
@@ -611,7 +796,6 @@ if (areaSelect.value === 'true') {
             window.location.reload();
             fetchUsers();
         } else {
-            // Tampilkan pesan kesalahan jika ada
             alert(data.message || 'Terjadi kesalahan saat menambahkan user.');
         }
     } catch (error) {
@@ -620,7 +804,6 @@ if (areaSelect.value === 'true') {
     }
 });
 
-// Event listener untuk tombol buka modal
 document.getElementById('addUserBtn').addEventListener('click', openModal);
 });
 
@@ -645,7 +828,6 @@ document.querySelectorAll('.riset-button').forEach(button => {
 });
 
 document.getElementById('closeModalReset').addEventListener('click', function () {
-    
     closeModal();
 });
 

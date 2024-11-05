@@ -117,22 +117,6 @@
     </div>
 </div>
 
-
-<div class="sm:col-span-1">
-    <label for="aset_pic" class="block text-sm font-medium leading-6 text-gray-900">Aset PIC</label>
-    <div class="mt-2">
-        <select name="aset_pic" id="aset_pic" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2">
-            <option value="" disabled selected>Pilih PIC</option>
-            <option value="IT">IT</option>
-            <option value="GA Pusat">GA Pusat</option>
-            <option value="GA Area">GA Area</option>
-            <option value="Keuangan">Keuangan</option>
-            <option value="Outlet">Outlet</option>
-            <option value="MA">MA</option>
-        </select>
-    </div>
-</div>
-
         <div class="sm:col-span-2"> 
           <label for="aset_spesifikasi" class="block text-sm font-medium leading-6 text-gray-900">Spesifikasi Aset</label>
           <div class="mt-2">
@@ -140,33 +124,27 @@
           </div>
         </div>
 
-        <div class="sm:col-span-1">
-  <label for="outlet_id" class="block text-sm font-medium leading-6 text-gray-900">Outlet</label>
+<div class="sm:col-span-1">
+  <label for="aset_klasifikasi" class="block text-sm font-medium leading-6 text-gray-900">Type Klasifikasi</label>
   <div class="mt-2">
-    <select name="outlet_id" id="outlet_id" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2">
-      <option value="">Pilih Outlet</option>
+    <select name="aset_klasifikasi" id="aset_klasifikasi" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2">
+      <option value="" disabled selected>Pilih Klasifikasi</option>
     </select>
   </div>
 </div>
 
 <div class="sm:col-span-1">
-  <label for="aset_klasifikasi" class="block text-sm font-medium leading-6 text-gray-900">Type Klasifikasi</label>
-  <div class="mt-2">
-    <select name="aset_klasifikasi" id="aset_klasifikasi" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2">
-      <option value="">Pilih Klasifikasi</option>
-    </select>
-  </div>
-</div>
-
-        <div class="sm:col-span-1">
-          <label for="aset_kondisi" class="block text-sm font-medium leading-6 text-gray-900">Aset Kondisi</label>
+          <label class="block text-sm font-medium leading-6 text-gray-900">Aset Kondisi Awal</label>
           <div class="mt-2">
-        <select name="aset_kondisi" id="aset_kondisi" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2">
-            <option value="" disabled selected>Pilih kondisi aset</option>
-            <option value="baru">Baru</option>
-            <option value="bekas">Bekas</option>
-        </select>
-    </div>
+            <div class="flex items-center">
+              <input type="radio" id="kondisi_baru" name="aset_kondisi" value="baru" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <label for="kondisi_baru" class="ml-2 block text-sm text-gray-900">Baru</label>
+            </div>
+            <div class="flex items-center mt-2">
+              <input type="radio" id="kondisi_bekas" name="aset_kondisi" value="bekas" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <label for="kondisi_bekas" class="ml-2 block text-sm text-gray-900">Bekas</label>
+            </div>
+          </div>
         </div>
 
         <div class="sm:col-span-1">
@@ -177,14 +155,17 @@
         </div>
 
         <div class="sm:col-span-1">
-          <label for="aset_status" class="block text-sm font-medium leading-6 text-gray-900">Status Aset</label>
+          <label class="block text-sm font-medium leading-6 text-gray-900">Status Aset</label>
           <div class="mt-2">
-        <select name="aset_status" id="aset_status" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2">
-            <option value="" disabled selected>Pilih status aset</option>
-            <option value="baik">Baik</option>
-            <option value="buruk">Buruk</option>
-        </select>
-    </div>
+            <div class="flex items-center">
+              <input type="radio" id="status_baik" name="aset_status" value="baik" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <label for="status_baik" class="ml-2 block text-sm text-gray-900">Baik</label>
+            </div>
+            <div class="flex items-center mt-2">
+              <input type="radio" id="status_buruk" name="aset_status" value="buruk" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <label for="status_buruk" class="ml-2 block text-sm text-gray-900">Buruk</label>
+            </div>
+          </div>
         </div>
 
         <div class="sm:col-span-1">
@@ -194,6 +175,42 @@
           </div>
         </div>
 
+        <div class="sm:col-span-1">
+          <label for="outlet_id" class="block text-sm font-medium leading-6 text-gray-900">Area Kerja</label>
+          <div class="mt-2">
+            <select name="outlet_id" id="outlet_id" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2" required>
+              <option value="" disabled selected>Pilih Area Kerja</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sm:col-span-1">
+          <label for="aset_pic" class="block text-sm font-medium leading-6 text-gray-900">PIC</label>
+          <div class="mt-2">
+            <select name="aset_pic" id="aset_pic" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2" required>
+              <option value="" disabled selected>Pilih PIC</option>
+              <option value="IT">IT</option>
+              <option value="GA Pusat">GA Pusat</option>
+              <option value="GA Area">GA Area</option>
+              <option value="Keuangan">Keuangan</option>
+              <option value="Outlet">Outlet</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="sm:col-span-1">
+          <label for="penanggungjawab" class="block text-sm font-medium leading-6 text-gray-900">Penanggung Jawab</label>
+          <div class="mt-2">
+            <select name="penanggungjawab" id="penanggungjawab" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2" required>
+              <option value="" disabled selected>Pilih Penanggung Jawab</option>
+              <option value="DM">DM</option>
+              <option value="Kasir">Kasir</option>
+              <option value="IT">IT</option>
+              <option value="GA Pusat">GA Pusat</option>
+              <option value="GA Area">GA Area</option>
+            </select>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -354,23 +371,33 @@ function populateForm(asset) {
     document.getElementById('aset_name').value = asset.aset_name || '';
     document.getElementById('aset_merk').value = asset.aset_merk || '';
     document.getElementById('aset_spesifikasi').value = asset.aset_spesifikasi || '';
-    document.getElementById('aset_kondisi').value = asset.aset_kondisi || '';
+    if (asset.aset_kondisi === 'baru') {
+        document.getElementById('kondisi_baru').checked = true;
+    } else {
+        document.getElementById('kondisi_bekas').checked = true;
+    }
+
     document.getElementById('aset_tgl_pembelian').value = asset.aset_tgl_pembelian || '';
-    document.getElementById('aset_status').value = asset.aset_status || '';
+    if (asset.aset_status === 'baik') {
+        document.getElementById('status_baik').checked = true;
+    } else {
+        document.getElementById('status_buruk').checked = true;
+    }
+
     document.getElementById('klasifikasi_nilai_perolehan').value = asset.klasifikasi_nilai_perolehan || '';
     document.getElementById('aset_pic').value = asset.aset_pic || '';
-    
-    document.getElementById('outlet_id').value = asset.outlet.outlet_id || ''; 
+    document.getElementById('outlet_id').value = asset.outlet_id || ''; 
     document.getElementById('aset_klasifikasi').value = asset.aset_klasifikasi || '';
+    document.getElementById('penanggungjawab').value = asset.penanggungjawab || '';
 
     const assetImage = asset.aset_image;
     const imagePreview = document.getElementById('aset_image_preview');
 
     if (assetImage) {
-        imagePreview.src = `http://127.0.0.1:8000/storage/${assetImage}`; // Construct the full URL to the image
-        imagePreview.classList.remove('hidden'); // Show the image
+        imagePreview.src = `http://127.0.0.1:8000/storage/${assetImage}`; 
+        imagePreview.classList.remove('hidden'); 
     } else {
-        imagePreview.src = ''; // Clear the image src if not available
+        imagePreview.src = ''; 
         imagePreview.classList.add('hidden'); // Hide the image if no asset image is present
     }
 }
@@ -394,29 +421,31 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         const token = localStorage.getItem('token');
+        const asetKondisi = document.querySelector('input[name="aset_kondisi"]:checked');
+const asetStatus = document.querySelector('input[name="aset_status"]:checked');
         
         const data = {
     aset_name: document.getElementById('aset_name').value,
     aset_merk: document.getElementById('aset_merk').value,
     aset_spesifikasi: document.getElementById('aset_spesifikasi').value,
-    aset_kondisi: document.getElementById('aset_kondisi').value,
+    aset_kondisi: asetKondisi ? asetKondisi.value : null,
     aset_tgl_pembelian: document.getElementById('aset_tgl_pembelian').value,
-    aset_status: document.getElementById('aset_status').value,
+    aset_status: asetStatus ? asetStatus.value : null,
     klasifikasi_nilai_perolehan: document.getElementById('klasifikasi_nilai_perolehan').value,
     aset_pic: document.getElementById('aset_pic').value,
     outlet_id: parseInt(document.getElementById('outlet_id').value),
-    aset_klasifikasi: document.getElementById('aset_klasifikasi').value
+    aset_klasifikasi: document.getElementById('aset_klasifikasi').value,
+    penanggungjawab: document.getElementById('penanggungjawab').value || '',
+
 };
-
-
         try {
             const response = await fetch(`http://127.0.0.1:8000/api/asets/update/${assetId}`, {
                 method: 'PUT',
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json' // Set content type as JSON
+                    'Content-Type': 'application/json' 
                 },
-                body: JSON.stringify(data) // Convert data object to JSON
+                body: JSON.stringify(data) 
             });
 
             if (response.ok) {

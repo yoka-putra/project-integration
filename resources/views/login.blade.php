@@ -155,7 +155,7 @@
                 const alertDiv = document.getElementById('alert');
                 alertDiv.classList.remove('hidden');
                 setTimeout(() => {
-                    window.location.href = '/masterAset';
+                    window.location.href = '/daftarAset';
                 }, 2000);
             })
             .catch(error => {
@@ -169,5 +169,6 @@
             alertDiv.classList.add('hidden');
         });
     </script>
+
 </body>
 </html>

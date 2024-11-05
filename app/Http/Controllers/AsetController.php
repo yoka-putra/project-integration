@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Aset;
+use App\Models\JadwalMaintenance;
 use App\Models\Klasifikasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -14,6 +15,10 @@ class AsetController extends Controller
     public function masterAsetPage()
     {
         return view('masterAset');
+    }
+    public function parameterKesehatanPage()
+    {
+        return view('parameterKesehatan');
     }
     public function addAsetPage()
     {
@@ -41,73 +46,83 @@ class AsetController extends Controller
         $aset = Aset::findOrFail($id);
         return view('viewAset', compact('aset'));
     }
+    public function ViewBeforeMain($id)
+    {
+        $aset = Aset::findOrFail($id);
+        return view('viewBeforeMaint', compact('aset'));
+    }
     
     public function createAset(Request $request)
-{
-    $user = Auth::guard('api')->user();
-
-    if (!$user) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Unauthorized: Invalid token',
-        ], 401);
-    }
-
-    try {
-        $validator = Validator::make($request->all(), [
-            'aset_name' => 'required|string|max:255',
-            'aset_merk' => 'required|string|max:255',
-            'aset_spesifikasi' => 'required|string',
-            'aset_klasifikasi' => 'required|exists:klasifikasi,klasifikasi_id',
-            'aset_kondisi' => 'nullable|string|max:50',
-            'aset_pic' => 'required|string|max:255',
-            'aset_tgl_pembelian' => 'required|date',
-            'aset_status' => 'nullable|string|max:50',
-            'klasifikasi_nilai_buku_terakhir' => 'nullable|numeric',
-            'klasifikasi_nilai_perolehan' => 'required|numeric',
-            'outlet_id' => 'required|exists:outlet,outlet_id',
-            'aset_image' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-        ]);
-
-        if ($validator->fails()) {
+    {
+        $user = Auth::guard('api')->user();
+    
+        if (!$user) {
             return response()->json([
                 'success' => false,
-                'message' => 'Validation Error',
-                'errors' => $validator->errors(),
-            ], 422);
+                'message' => 'Unauthorized: Invalid token',
+            ], 401);
         }
-
-        $validatedData = $validator->validated();
-
-        if ($request->hasFile('aset_image')) {
-            $imagePath = $request->file('aset_image')->store('aset_images', 'public');
-            $validatedData['aset_image'] = $imagePath;
-        }
-
-        $klasifikasi = Klasifikasi::findOrFail($validatedData['aset_klasifikasi']);
-        $validatedData['aset_tgl_maintenance'] = $klasifikasi->jadwal_maintenance;
-
-        $aset = Aset::create($validatedData);
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Create Aset successfully',
-            'aset' => $aset->fresh(['klasifikasi', 'outlet']),
-        ], 200);
-    } catch (\Exception $e) {
-        \Log::error('Error creating aset: ' . $e->getMessage());
-        return response()->json([
-            'success' => false,
-            'message' => 'Failed to create Aset',
-            'error' => $e->getMessage(),
-        ], 500);
-    }
-}
     
-public function getAsetAll()
+        try {
+            $validator = Validator::make($request->all(), [
+                'aset_name' => 'required|string|max:255',
+                'aset_merk' => 'required|string|max:255',
+                'aset_spesifikasi' => 'required|string',
+                'aset_klasifikasi' => 'required|exists:klasifikasi,klasifikasi_id',
+                'aset_kondisi' => 'nullable|string|max:50',
+                'aset_pic' => 'required|string|max:255',
+                'aset_tgl_pembelian' => 'required|date',
+                'aset_status' => 'nullable|string|max:50',
+                'klasifikasi_nilai_buku_terakhir' => 'nullable|numeric',
+                'klasifikasi_nilai_perolehan' => 'required|numeric',
+                'outlet_id' => 'required|exists:outlet,outlet_id',
+                'aset_image' => 'nullable|file|max:2048',  
+                'penanggungjawab' => 'required|string|max:255',
+            ]);
+    
+            if ($validator->fails()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Validation Error',
+                    'errors' => $validator->errors(),
+                ], 422);
+            }
+    
+            $validatedData = $validator->validated();
+    
+            // Proses penyimpanan gambar hanya jika ada file yang diunggah
+            if ($request->hasFile('aset_image')) {
+                $imagePath = $request->file('aset_image')->store('aset_images', 'public');
+                $validatedData['aset_image'] = $imagePath;
+            }
+    
+            // Ambil data dari model Klasifikasi untuk aset_tgl_maintenance
+            $klasifikasi = Klasifikasi::findOrFail($validatedData['aset_klasifikasi']);
+            $validatedData['aset_tgl_maintenance'] = $klasifikasi->jadwal_maintenance;
+    
+            // Buat data aset baru
+            $aset = Aset::create($validatedData);
+    
+            return response()->json([
+                'success' => true,
+                'message' => 'Create Aset successfully',
+                'aset' => $aset->fresh(['klasifikasi', 'outlet']),
+            ], 200);
+        } catch (\Exception $e) {
+            \Log::error('Error creating aset: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to create Aset',
+                'error' => $e->getMessage(),
+            ], 500);
+        }
+    }
+    
+public function getAsetAll(Request $request)
 {
     $user = Auth::guard('api')->user();
 
+    // Check if user is authenticated
     if (!$user) {
         return response()->json([
             'success' => false,
@@ -115,15 +130,46 @@ public function getAsetAll()
         ], 401);
     }
 
-    $asets = Aset::with(['klasifikasi', 'outlet'])
-        ->get()
-        ->map(function ($aset) {
-            $aset->usia_aset_in_months = $aset->usia_aset_in_months;
-            return $aset;
-        });
+    // Get sort order from query parameters
+    $sortOrder = $request->query('sortOrder', 'asc');
+
+    // Validate sort order
+    if (!in_array($sortOrder, ['asc', 'desc'])) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Invalid sort order. Use "asc" or "desc".',
+        ], 400);
+    }
+
+    // Check user level and set query accordingly
+    $query = Aset::with(['klasifikasi', 'outlet', 'jadwalMaintenance']);
+
+    if (in_array($user->user_level, ['IT', 'GA Pusat', 'Keuangan'])) {
+        // Fetch all assets if user has higher access
+        $asets = $query->orderBy('aset_id', $sortOrder)->paginate(10);
+    } else {
+        // Fetch assets filtered by outlet or area if user has lower access
+        $asets = $query->where(function ($query) use ($user) {
+            if ($user->user_outlet_id) {
+                $query->where('outlet_id', $user->user_outlet_id);
+            }
+            if ($user->user_area_id) {
+                $query->where('area_id', $user->user_area_id);
+            }
+        })
+        ->orderBy('aset_id', $sortOrder)
+        ->paginate(10);
+    }
+
+    // Calculate usia_aset_in_months if necessary
+    // This loop can be omitted if the accessor is already defined in the model
+    foreach ($asets as $aset) {
+        $aset->usia_aset_in_months = $aset->usia_aset_in_months; 
+    }
 
     return response()->json($asets);
 }
+
 
 public function getAset($id)
 {
@@ -136,7 +182,7 @@ public function getAset($id)
         ], 401);
     }
 
-    $aset = Aset::with(['klasifikasi', 'outlet'])->find($id);
+    $aset = Aset::with(['klasifikasi', 'outlet', 'jadwalMaintenance'])->find($id);
 
     if (!$aset) {
         return response()->json(['message' => 'Aset tidak ditemukan'], 404);
@@ -182,6 +228,7 @@ public function updateAset(Request $request, $id)
             'klasifikasi_nilai_perolehan' => 'sometimes|required|numeric',
             'outlet_id' => 'sometimes|required|exists:outlet,outlet_id',
             'aset_image' => 'sometimes|nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+            'penanggungjawab' => 'sometimes|required|string|max:255',
         ]);
         
         try {
@@ -219,6 +266,68 @@ public function updateAset(Request $request, $id)
         ], 500);
     }
 }
+
+public function updateAsetStatus(Request $request, $id)
+{
+    $user = Auth::guard('api')->user();
+
+    if (!$user) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Unauthorized: Invalid token',
+        ], 401);
+    }
+
+    try {
+        // Validasi status aset baru
+        $validator = Validator::make($request->all(), [
+            'aset_status' => 'required|string|max:50',
+        ]);
+
+        if ($validator->fails()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Validation Error',
+                'errors' => $validator->errors(),
+            ], 422);
+        }
+
+        // Cari aset berdasarkan ID
+        $aset = Aset::find($id);
+        if (!$aset) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Aset not found',
+            ], 404);
+        }
+
+        // Update status aset
+        $aset->aset_status = $request->input('aset_status');
+        $aset->save();
+
+        // Buat entry baru di tabel update_status untuk mencatat perubahan
+        $aset->updateStatuses()->create([
+            'aset_id' => $aset->aset_id,
+            'aset_status' => $aset->aset_status,
+            'tgl_update' => now(),
+        ]);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Aset status updated successfully',
+            'aset' => $aset->fresh(['klasifikasi', 'outlet']),
+        ], 200);
+
+    } catch (\Exception $e) {
+        \Log::error('Error updating aset status: ' . $e->getMessage());
+        return response()->json([
+            'success' => false,
+            'message' => 'Failed to update Aset status',
+            'error' => $e->getMessage(),
+        ], 500);
+    }
+}
+
 
 
 

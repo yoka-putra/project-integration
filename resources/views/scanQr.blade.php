@@ -88,7 +88,7 @@
 
 <!-- Content -->
 <div class="grow p-6" id="content">
-    <div class="p-6 flex flex-col items-center">
+    <div class="flex flex-col items-center">
         <div class="bg-white rounded-xl p-6 flex items-center justify-between mb-4 w-full">
             <div class="flex items-center">
                 <ion-icon id="menuToggleBtn" name="menu" class="text-3xl cursor-pointer mr-2"></ion-icon>

@@ -81,7 +81,7 @@
                 <hr class="border-white my-4">
                 <ul class="mt-4 text-white">
                     <form class="inline">
-                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                  
+                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                     
                     <form class="inline">
     <a href="{{ route('scanQr') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
         <span class="mr-2"><i class="bi bi-camera"></i></span> 
@@ -146,7 +146,7 @@
     </div>
     <div class="data-section">
         <table>
-            <tr><th>Nama Asset</th><td id="asset-name">-</td></tr>
+        <tr><th>Nama Asset</th><td id="asset-name">-</td></tr>
             <tr><th>Merk Aset</th><td id="asset-merk">-</td></tr>
             <tr><th>Nama Outlet</th><td id="asset-outlet">-</td></tr>
             <tr><th>PIC</th><td id="aset-pic">-</td></tr>
@@ -167,15 +167,10 @@
 </div>
 
 <div class="text-right mt-6 mb-6 pr-6">
-    <button 
-        id="btn-maintenance" 
-        class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-red-500"
-        onclick="parameterKesehatan(asetId)"
-    >
-        Maintenance Aset
+    <button id="btn-maintenance" class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-red-500">
+        Request Barang Hilang
     </button>
-</div>
-     
+</div>     
             <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
             <script>
 
@@ -193,13 +188,8 @@ if (userLevel === 'IT' || userLevel === 'GA Pusat') {
     // Jika tidak, sembunyikan menu
     masterMenu.classList.add('hidden');
 }
-const currentUrl = window.location.href;
-const asetId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 
-function parameterKesehatan(asetId) {
-    window.location.href = `/parameterKesehatan/${asetId}`;
-}
-                
+
 document.getElementById('logout').addEventListener('click', function(e) {
     e.preventDefault(); 
     const token = localStorage.getItem('token');
@@ -277,7 +267,7 @@ if (assetId) {
         document.getElementById('asset-outlet').innerText = aset.outlet ? aset.outlet.outlet_name : '-';
         document.getElementById('aset-pic').innerText = aset.aset_pic || '-';
         document.getElementById('aset-kondisi').innerText = aset.aset_kondisi || '-';
-        
+        document.getElementById('jadwal-maintenance').innerText = aset.klasifikasi.jadwal_maintenance || '-';
         document.getElementById('jenis_maintenance').innerText = aset.klasifikasi.jenis_maintenance || '-';
         document.getElementById('aset-riwayat').innerText = aset.aset_status || '-';
         document.getElementById('klasifikasi-nilai-perolehan').innerText = aset.klasifikasi_nilai_perolehan || '-';
@@ -286,8 +276,7 @@ if (assetId) {
         document.getElementById('asset-spesifikasi').innerText = aset.aset_spesifikasi || '-';
         document.getElementById('nilai-penyusutan').innerText = aset.nilai_penyusutan || '-';
         document.getElementById('parameter-kesehatan-aset').innerText = aset.klasifikasi.parameter_kesehatan_aset || '-';
-        // Get the maintenance schedule element
-const maintenanceElement = document.getElementById('jadwal-maintenance');
+        const maintenanceElement = document.getElementById('jadwal-maintenance');
 
 // Check if there's a jadwal_maintenance array and if it has items
 if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
@@ -297,8 +286,6 @@ if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
 } else {
     maintenanceElement.innerText = '-'; // Display '-' if there are no maintenance records
 }
-
-
         const umurAsetElement = document.getElementById('data-umur-aset'); 
         if (umurAsetElement) {
             umurAsetElement.innerText = data.usia_aset_in_months || '-'; 

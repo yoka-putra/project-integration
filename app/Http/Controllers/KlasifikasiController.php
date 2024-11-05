@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 
 class KlasifikasiController extends Controller
 {
+
     public function getKlasifikasiAll()
     {
 
@@ -51,6 +52,7 @@ class KlasifikasiController extends Controller
             'klasifikasi_nilai_ekonomis' => 'nullable|numeric',
             'jadwal_maintenance' => 'nullable|date',
             'jenis_maintenance' => 'nullable|string|max:255',
+            'parameter_kesehatan_aset' => 'nullable|string|max:5000',
         ]);
 
         try {

@@ -7,6 +7,7 @@ use App\Http\Controllers\AreaController;
 use App\Http\Controllers\OutletController;
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\KlasifikasiController;
+use App\Http\Controllers\JadwalMaintenanceController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -31,6 +32,7 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::put('/asets/update/{id}', [AsetController::class, 'updateAset']);
     Route::delete('/asets/delete/{id}', [AsetController::class, 'deleteAset']);
     Route::post('/asets/search', [AsetController::class, 'searchAset']);
+    Route::put('/asets/update/status/{id}', [AsetController::class, 'updateAsetStatus']);
 
     //area
     Route::post('/area/create', [AreaController::class, 'createArea']);
@@ -50,6 +52,9 @@ Route::group(['middleware' => 'auth:api'], function () {
     Route::get('/outlets/get/{id}', [OutletController::class, 'getOutlet']);
     Route::put('/outlets/update/{id}', [OutletController::class, 'updateOutlet']);
     Route::delete('/outlets/delete/{id}', [OutletController::class, 'deleteOutlet']);
+
+    //maintenance
+    Route::post('/create/jadwal', [JadwalMaintenanceController::class, 'Jadwal']);
 });
 
 // Route::controller(AuthController::class)->group(function () {

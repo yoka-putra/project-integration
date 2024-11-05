@@ -37,7 +37,12 @@
                 <hr class="border-white my-4">
                 <ul class="mt-4 text-white">
                     <form class="inline">
-                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                     <form class="inline">     <a class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">         <span class="mr-2"><i class="bi bi-camera"></i></span>          <span>Scan Qr Code</span>     </a> </form>
+                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                       <form class="inline">
+    <a href="{{ route('scanQr') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+        <span class="mr-2"><i class="bi bi-camera"></i></span> 
+        <span>Scan Qr Code</span>
+    </a>
+</form>
                     <details id="masterMenu" class="group hidden">
     <summary class="flex items-center cursor-pointer bg-orange-600 p-3 rounded-lg mb-2">
         <span class="mr-2"><i class="bi bi-wrench"></i></span>
@@ -94,13 +99,14 @@
         <table class="min-w-full">
     <thead>
         <tr class="bg-gray-100">
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No.</th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Aset</th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Merk</th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
+        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">No</th>
+        <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Aset</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Klasifikasi</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Penanggung Jawab</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Area Kerja</th>
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">PIC</th>
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jadwal Maintenance</th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Outlet</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
         </tr>
     </thead>
@@ -108,6 +114,37 @@
     </tbody>
 </table>
 
+<!-- Pagination Component -->
+<div class="flex justify-end items-center fixed bottom-4 right-4">
+  <div id="pagination" class="inline-flex items-center justify-center rounded bg-blue-600 py-1 text-white">
+    <a href="#" id="prevPage" class="inline-flex size-8 items-center justify-center">
+      <span class="sr-only">Prev Page</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" />
+      </svg>
+    </a>
+
+    <span class="h-4 w-px bg-white/25" aria-hidden="true"></span>
+
+    <div>
+      <label for="PaginationPage" class="sr-only">Page</label>
+      <input
+        type="number"
+        id="PaginationPage"
+        class="h-8 w-12 rounded border-none bg-transparent p-0 text-center text-xs font-medium focus:outline-none focus:ring-inset focus:ring-white"
+        min="1"
+        value="1"  
+      />
+    </div>
+
+    <a href="#" id="nextPage" class="inline-flex size-8 items-center justify-center">
+      <span class="sr-only">Next Page</span>
+      <svg xmlns="http://www.w3.org/2000/svg" class="size-3" viewBox="0 0 20 20" fill="currentColor">
+        <path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" />
+      </svg>
+    </a>
+  </div>
+</div>
                     </div>
                 </div>
             </div>
@@ -131,12 +168,12 @@ if (userLevel === 'IT' || userLevel === 'GA Pusat') {
     masterMenu.classList.add('hidden');
 }
 
-function viewAset(asetId) {
-    window.location.href = `/viewAset/${asetId}`;
+function viewBeforeMaint(asetId) {
+    window.location.href = `/viewBeforeMaint/${asetId}`;
 }
-function updateAset(asetId) {
-    window.location.href = `/updateAset/${asetId}`;
-}
+// function updateAset(asetId) {
+//     window.location.href = `/updateAset/${asetId}`;
+// }
 
 document.querySelectorAll('.logout').forEach(button => {
     button.addEventListener('click', function(e) {
@@ -184,13 +221,20 @@ const tableBody = document.querySelector('#asetTableBody');
 function getToken() {
     return localStorage.getItem('token');
 }
+let currentPage = 1; 
+const asetsPerPage = 10; 
 
-async function fetchAsets() {
+function getToken() {
+    return localStorage.getItem('token');
+}
+
+async function fetchAsets(sortOrder = '', page = 1) {
     const token = getToken();
-    console.log('JWT Token:', token);
+    const url = `http://127.0.0.1:8000/api/asets/get?sortOrder=${sortOrder}&page=${page}`;
+    console.log('Fetching from URL:', url);
 
     try {
-        const response = await fetch('http://127.0.0.1:8000/api/asets/get', {
+        const response = await fetch(url, {
             method: 'GET',
             headers: {
                 'Authorization': `Bearer ${token}`,
@@ -204,9 +248,15 @@ async function fetchAsets() {
             throw new Error(`HTTP error! status: ${response.status}`);
         }
 
-        const asets = await response.json();
-        console.log('Fetched asets:', asets);
-        renderAset(asets);
+        const result = await response.json();
+        console.log('Fetched asets:', result);
+
+        if (result && result.data && result.last_page !== undefined) {
+            renderAset(result.data); 
+            updatePagination(result); 
+        } else {
+            console.error('Unexpected response structure:', result);
+        }
     } catch (error) {
         console.error('Error fetching asets:', error);
     }
@@ -217,21 +267,53 @@ function renderAset(asets) {
     asets.forEach((aset, index) => {
         const row = document.createElement('tr');
         row.innerHTML = `
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">${index + 1}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 text-center">${(currentPage - 1) * 10 + (index + 1)}</td>
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-id text-center" style="display:none;">${aset.aset_id || 'N/A'}</td>
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-full-name text-center">${aset.aset_name || 'N/A'}</td>
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-name text-center">${aset.aset_merk || 'N/A'}</td>
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-email text-center">${aset.aset_kondisi || 'N/A'}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-name text-center">${aset.klasifikasi.klasifikasi_nama || 'N/A'}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-email text-center">${aset.penanggungjawab || 'N/A'}</td>
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-email text-center">${aset.outlet.outlet_name || 'N/A'}</td>
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">${aset.aset_pic || 'N/A'}</td>
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">${aset.aset_tgl_maintenance || 'N/A'}</td>
-            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">${aset.outlet ? aset.outlet.outlet_name : 'N/A'}</td>
+           <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">
+    
+    ${aset.jadwal_maintenance.length > 0 ? 
+        aset.jadwal_maintenance.map(jadwal => jadwal.tanggal_maintenance).join(', ') 
+        : 'N/A'}
+</td>
+
+            <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">${aset.aset_status || 'N/A'}</td>
             <td class="whitespace-nowrap px-4 py-2 text-center">
-                <button class="bg-red-500 text-white p-2 rounded" onclick="viewAset(${aset.aset_id})">View</button>
+                <button class="bg-red-500 text-white p-2 rounded" onclick="viewBeforeMaint(${aset.aset_id})">View</button>
             </td>
         `;
         tableBody.appendChild(row);
     });
 }
+
+function updatePagination(meta) {
+    if (meta && meta.last_page) {
+        document.getElementById('PaginationPage').value = currentPage; // Update current page number
+        document.getElementById('prevPage').classList.toggle('opacity-50', currentPage === 1); // Disable Prev if on first page
+        document.getElementById('nextPage').classList.toggle('opacity-50', currentPage >= meta.last_page); // Disable Next if on last page
+    } else {
+        console.error('Meta data is not defined or does not have last_page:', meta);
+    }
+}
+
+
+document.getElementById('prevPage').addEventListener('click', function(e) {
+    e.preventDefault();
+    if (currentPage > 1) {
+        currentPage--;
+        fetchAsets('', currentPage);
+    }
+});
+
+document.getElementById('nextPage').addEventListener('click', function(e) {
+    e.preventDefault();
+    currentPage++;
+    fetchAsets('', currentPage);
+});
 
 function viewAset(asetId) {
     console.log(`View asset with ID: ${asetId}`);
