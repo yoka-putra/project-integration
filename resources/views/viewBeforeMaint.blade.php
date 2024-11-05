@@ -227,7 +227,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 });
 
-
 function getAssetIdFromPath() {
     const path = window.location.pathname; 
     const segments = path.split('/');      

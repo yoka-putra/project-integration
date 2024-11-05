@@ -160,7 +160,7 @@
             <tr><th>Nilai Buku Terakhir</th><td id="klasifikasi-nilai-buku-terakhir">-</td></tr>
             <tr><th>Nilai Ekonomis (Satuan Bulan)</th><td id="klasifikasi-nilai-ekonomis">-</td></tr>
             <tr><th>Nilai Penyusutan</th><td id="nilai-penyusutan">-</td></tr>
-            <tr><th>Parameter Kesehatan</th><td id="parameter-kesehatan-aset">-</td></tr>
+            <!-- <tr><th>Parameter Kesehatan</th><td id="parameter-kesehatan-aset">-</td></tr> -->
             
         </table>
     </div>
@@ -285,7 +285,7 @@ if (assetId) {
         document.getElementById('klasifikasi-nilai-ekonomis').innerText = aset.klasifikasi.klasifikasi_nilai_ekonomis || '-';
         document.getElementById('asset-spesifikasi').innerText = aset.aset_spesifikasi || '-';
         document.getElementById('nilai-penyusutan').innerText = aset.nilai_penyusutan || '-';
-        document.getElementById('parameter-kesehatan-aset').innerText = aset.klasifikasi.parameter_kesehatan_aset || '-';
+        // document.getElementById('parameter-kesehatan-aset').innerText = aset.klasifikasi.parameter_kesehatan_aset || '-';
         // Get the maintenance schedule element
 const maintenanceElement = document.getElementById('jadwal-maintenance');
 

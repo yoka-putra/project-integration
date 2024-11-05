@@ -51,7 +51,6 @@ class Aset extends Model
             $currentDate = Carbon::now();
             return $purchaseDate->diffInMonths($currentDate);
         }
-
         return null;
     }
 
@@ -63,7 +62,6 @@ class Aset extends Model
                 return $this->klasifikasi_nilai_perolehan / $umurEkonomis;
             }
         }
-
         return null;
     }
 
@@ -75,26 +73,25 @@ class Aset extends Model
         if ($this->klasifikasi_nilai_perolehan && $usiaAset !== null && $nilaiPenyusutan !== null) {
             return $this->klasifikasi_nilai_perolehan - ($nilaiPenyusutan * $usiaAset);
         }
-
         return null;
     }
 
-    protected static function boot()
-    {
-        parent::boot();
+    // protected static function boot()
+    // {
+    //     parent::boot();
 
-        static::updated(function ($aset) {
-            // Check if aset_status has changed
-            if ($aset->isDirty('aset_status')) {
-                // Save changes to update_status table
-                UpdateStatus::create([
-                    'aset_id' => $aset->aset_id,
-                    'aset_status' => $aset->aset_status,
-                    'tgl_update' => now(),
-                ]);
-            }
-        });
-    }
+    //     static::updated(function ($aset) {
+    //         // Check if aset_status has changed
+    //         if ($aset->isDirty('aset_status')) {
+    //             // Save changes to update_status table
+    //             UpdateStatus::create([
+    //                 'aset_id' => $aset->aset_id,
+    //                 'aset_status' => $aset->aset_status,
+    //                 'tgl_update' => now(),
+    //             ]);
+    //         }
+    //     });
+    // }
 
     public function updateStatuses()
     {

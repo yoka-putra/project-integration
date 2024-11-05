@@ -305,7 +305,7 @@ public function updateAsetStatus(Request $request, $id)
         $aset->aset_status = $request->input('aset_status');
         $aset->save();
 
-        // Buat entry baru di tabel update_status untuk mencatat perubahan
+        //Buat entry baru di tabel update_status untuk mencatat perubahan
         $aset->updateStatuses()->create([
             'aset_id' => $aset->aset_id,
             'aset_status' => $aset->aset_status,

@@ -106,7 +106,8 @@
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Area Kerja</th>
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">PIC</th>
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Jadwal Maintenance</th>
-            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi Terakhir</th>
+            <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Update</th>
             <th class="px-6 py-3 text-center text-xs font-medium text-gray-500 uppercase tracking-wider">Action</th>
         </tr>
     </thead>
@@ -282,6 +283,10 @@ function renderAset(asets) {
 </td>
 
             <td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">${aset.aset_status || 'N/A'}</td>
+<td class="whitespace-nowrap px-4 py-2 font-medium text-gray-900 user-level text-center">
+    ${formatDateToLocal(aset.updated_at) || 'N/A'}
+</td>
+
             <td class="whitespace-nowrap px-4 py-2 text-center">
                 <button class="bg-red-500 text-white p-2 rounded" onclick="viewBeforeMaint(${aset.aset_id})">View</button>
             </td>
@@ -300,6 +305,14 @@ function updatePagination(meta) {
     }
 }
 
+function formatDateToLocal(updatedAt) {
+    const date = new Date(updatedAt);
+    // Konversi ke UTC+7
+    const utcPlus7 = new Date(date.getTime() + 7 * 60 * 60 * 1000);
+    // Format tanggal menjadi DD-MM-YYYY
+    const options = { year: 'numeric', month: '2-digit', day: '2-digit' };
+    return utcPlus7.toLocaleDateString('id-ID', options);
+}
 
 document.getElementById('prevPage').addEventListener('click', function(e) {
     e.preventDefault();
