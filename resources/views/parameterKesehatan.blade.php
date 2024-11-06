@@ -137,7 +137,7 @@
             <h2 class="text-lg font-semibold">Apakah Anda kondisi aset kurang baik?</h2>
             <p class="mt-2">Setelah menandai aset ini kurang baik anda harus mengisi alasan mengabaikan kondisi aset!</p>
             <div class="flex justify-end gap-4 mt-4">
-              <button class="bg-yellow-500 text-white py-1 px-4 rounded-md" onclick="confirmAjuan(assetId)">Ajuan Service/Ganti</button>
+            <button class="bg-yellow-500 text-white py-1 px-4 rounded-md" onclick="formPermintaanServiceGanti(assetId)">Ajuan Service/Ganti</button>
               <button class="bg-red-600 text-white py-1 px-4 rounded-md" onclick="confirmNo(assetId)">Batal</button>
             </div>
           </div>
@@ -151,7 +151,9 @@
   <!-- Scripts -->
   <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>  
   <script>
-
+function formPermintaanServiceGanti(asetId) {
+    window.location.href = `/formPermintaanServiceGanti/${asetId}`;
+}
 const currentUrl = window.location.href;
 const assetId = currentUrl.substring(currentUrl.lastIndexOf('/') + 1);
 const token = localStorage.getItem('token');
@@ -200,15 +202,12 @@ const token = localStorage.getItem('token');
       document.getElementById('confirmationModalKKB').style.display = 'block';
     }
 
-    // Function to close the modal
     function closeModalKKB() {
       document.getElementById('confirmationModalKKB').style.display = 'none';
     }
 
-    // Function to handle confirmation (Ya)
     function confirmNo() {
-    //   alert('Aset telah ditandai dalam kondisi kurang baik.');
-      closeModalKKB(); // Close the modal after confirmation
+      closeModalKKB(); 
     }
 
     // Ambil user_level dari localStorage

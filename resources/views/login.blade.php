@@ -152,6 +152,7 @@
                 localStorage.setItem('token', data.token);
                 localStorage.setItem('user_name', data.user.user_name);
                 localStorage.setItem('user_level', data.user.user_level);
+                localStorage.setItem('user_full_name', data.user.user_full_name);
                 const alertDiv = document.getElementById('alert');
                 alertDiv.classList.remove('hidden');
                 setTimeout(() => {

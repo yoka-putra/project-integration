@@ -5,11 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
+
 class Permintaan extends Model
 {
     use HasFactory;
 
     protected $table = 'permintaan';
+    protected $primaryKey = 'permintaan_id';
+    public $incrementing = true;
+    public $timestamps = true; 
 
     protected $fillable = [
         'permintaan_nama_pengaju',
@@ -22,15 +26,17 @@ class Permintaan extends Model
         'permintaan_kuantitas',
         'permintaan_aset',
         'permintaan_keterangan',
-        'permintaan_diajukan',
+        'user_id', // Relasi dengan User
+        'aset_id', // Relasi dengan Aset
     ];
 
     public function user()
     {
-        return $this->belongsTo(User::class, 'permintaan_nama_pengaju', 'user_full_name');
+        return $this->belongsTo(User::class, 'user_id', 'id'); 
     }
+
     public function aset()
     {
-        return $this->belongsTo(Aset::class, 'permintaan_aset', 'id'); // Assuming 'id' is the primary key in the aset table
+        return $this->belongsTo(Aset::class, 'aset_id', 'id'); 
     }
 }
