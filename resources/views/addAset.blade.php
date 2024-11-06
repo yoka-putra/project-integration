@@ -456,7 +456,6 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-
 document.querySelectorAll('.logout').forEach(button => {
     button.addEventListener('click', function(e) {
         e.preventDefault(); // Mencegah submit form
