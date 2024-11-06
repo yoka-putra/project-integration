@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AsetController;
+use App\Http\Controllers\PermintaanController;
 
 
 Route::middleware(['web'])->group(function () {
@@ -26,3 +27,4 @@ Route::get('qrGenerate/{id}', [AsetController::class, 'qrGeneratePage'])->name('
 Route::get('scanQr', [AsetController::class, 'scanQrPage'])->name('scanQr');
 Route::get('resetPw/{id}', [AuthController::class, 'resetPwPage'])->name('resetPw');
 Route::get('parameterKesehatan/{id}', [AsetController::class, 'ParameterKesehatanPage'])->name('parameterKesehatan');
+Route::get('formPermintaan', [PermintaanController::class, 'formPermintaanPage'])->name('formPermintaan');

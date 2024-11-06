@@ -25,9 +25,12 @@ class Permintaan extends Model
         'permintaan_diajukan',
     ];
 
-    // Relasi dengan tabel user (opsional, jika perlu)
     public function user()
     {
         return $this->belongsTo(User::class, 'permintaan_nama_pengaju', 'user_full_name');
+    }
+    public function aset()
+    {
+        return $this->belongsTo(Aset::class, 'permintaan_aset', 'id'); // Assuming 'id' is the primary key in the aset table
     }
 }

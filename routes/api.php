@@ -8,6 +8,7 @@ use App\Http\Controllers\OutletController;
 use App\Http\Controllers\AsetController;
 use App\Http\Controllers\KlasifikasiController;
 use App\Http\Controllers\JadwalMaintenanceController;
+use App\Http\Controllers\PermintaanController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -55,6 +56,11 @@ Route::group(['middleware' => 'auth:api'], function () {
 
     //maintenance
     Route::post('/create/jadwal', [JadwalMaintenanceController::class, 'Jadwal']);
+
+    //permintaan
+    Route::post('/request/create', [PermintaanController::class, 'createRequest']);
+    Route::get('/request/get', [PermintaanController::class, 'getAllRequest']);
+    Route::get('/request/get/{id}', [PermintaanController::class, 'getRequest']);
 });
 
 // Route::controller(AuthController::class)->group(function () {
