@@ -164,11 +164,12 @@
     </div>
 </div>
 
-<div class="text-right mt-6 mb-6 pr-6">
+<div class="text-right mt-6 mb-6 pr-6" id="request-barang-hilang-container" style="display: none;">
     <button class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-red-500" onclick="formBarangHilang(assetId)">
         Request Barang Hilang
     </button>
-</div>    
+</div>
+
             <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
             <script>
   function formBarangHilang(asetId) {
@@ -261,12 +262,14 @@ if (assetId) {
     .then(data => {
         const aset = data.aset; 
 
+        // Update the asset information on the page
         if (aset.aset_image) {
             document.getElementById('asset-image').src = `http://127.0.0.1:8000/storage/${aset.aset_image}`;
         } else {
             document.getElementById('asset-image').src = ''; 
             document.getElementById('asset-image').alt = 'Image not available';
         }
+
         document.getElementById('aset-tgl-beli').innerText = aset.aset_tgl_pembelian || '-';
         document.getElementById('asset-name').innerText = aset.aset_name || '-';
         document.getElementById('asset-merk').innerText = aset.aset_merk || '-';
@@ -282,28 +285,40 @@ if (assetId) {
         document.getElementById('asset-spesifikasi').innerText = aset.aset_spesifikasi || '-';
         document.getElementById('nilai-penyusutan').innerText = aset.nilai_penyusutan || '-';
         document.getElementById('parameter-kesehatan-aset').innerText = aset.klasifikasi.parameter_kesehatan_aset || '-';
-        const maintenanceElement = document.getElementById('jadwal-maintenance');
 
-// Check if there's a jadwal_maintenance array and if it has items
-if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
-    // Extract the dates from the jadwal_maintenance array
-    const maintenanceDates = aset.jadwal_maintenance.map(jadwal => jadwal.tanggal_maintenance).join(', ');
-    maintenanceElement.innerText = maintenanceDates;
-} else {
-    maintenanceElement.innerText = '-'; // Display '-' if there are no maintenance records
-}
+        // Check if there is a maintenance schedule
+        const maintenanceElement = document.getElementById('jadwal-maintenance');
+        if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
+            const maintenanceDates = aset.jadwal_maintenance.map(jadwal => jadwal.tanggal_maintenance).join(', ');
+            maintenanceElement.innerText = maintenanceDates;
+        } else {
+            maintenanceElement.innerText = '-';
+        }
+
+        // Calculate and display the asset's age
         const umurAsetElement = document.getElementById('data-umur-aset'); 
         if (umurAsetElement) {
             umurAsetElement.innerText = data.usia_aset_in_months || '-'; 
         } else {
             console.error('Element with ID "umur-aset" not found.');
         }
+
+        // Check if the "Request Barang Hilang" button should be displayed
+        if (aset.aset_status === 'Baik' || aset.aset_status === 'Non-maintenance') {
+            // Show the button if the status is either "Baik" or "Non-maintenance"
+            document.getElementById('request-barang-hilang-container').style.display = 'block';
+        } else {
+            // Hide the button if the status is not one of the allowed statuses
+            document.getElementById('request-barang-hilang-container').style.display = 'none';
+        }
+
     })
     .catch(error => console.error('Error fetching asset data:', error)); 
 } else {
     console.error('Asset ID not found in URL parameters.'); 
     alert('Asset ID is missing in the URL. Please provide a valid ID.'); 
 }
+
 </script>
         </div>
     </div>
