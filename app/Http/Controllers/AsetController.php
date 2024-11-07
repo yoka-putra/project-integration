@@ -118,60 +118,54 @@ class AsetController extends Controller
         }
     }
     
-public function getAsetAll(Request $request)
-{
-    $user = Auth::guard('api')->user();
-
-    // Check if user is authenticated
-    if (!$user) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Unauthorized: Invalid token',
-        ], 401);
+    public function getAsetAll(Request $request)
+    {
+        $user = Auth::guard('api')->user();
+    
+        // Check if user is authenticated
+        if (!$user) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Unauthorized: Invalid token',
+            ], 401);
+        }
+    
+        // Get sort order from query parameters
+        $sortOrder = $request->query('sortOrder', 'asc');
+    
+        // Validate sort order
+        if (!in_array($sortOrder, ['asc', 'desc'])) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Invalid sort order. Use "asc" or "desc".',
+            ], 400);
+        }
+    
+        // Query to fetch assets with necessary relationships
+        $query = Aset::with(['klasifikasi', 'outlet', 'jadwalMaintenance']);
+    
+        if (in_array($user->user_level, ['IT', 'GA Pusat', 'Keuangan'])) {
+            // Fetch all assets if user has higher access
+            $asets = $query->orderBy('aset_id', $sortOrder)->paginate(10);
+        } else {
+            // Filter assets by area_id through the outlet relationship
+            $asets = $query->whereHas('outlet', function ($q) use ($user) {
+                $q->where('outlet.outlet_area', $user->user_area_id); // Correct column reference
+            })
+            ->orderBy('aset_id', $sortOrder)
+            ->paginate(10);
+        }
+    
+        // Calculate usia_aset_in_months if necessary
+        foreach ($asets as $aset) {
+            $aset->usia_aset_in_months = $aset->usia_aset_in_months; 
+        }
+    
+        return response()->json($asets);
     }
-
-    // Get sort order from query parameters
-    $sortOrder = $request->query('sortOrder', 'asc');
-
-    // Validate sort order
-    if (!in_array($sortOrder, ['asc', 'desc'])) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Invalid sort order. Use "asc" or "desc".',
-        ], 400);
-    }
-
-    // Check user level and set query accordingly
-    $query = Aset::with(['klasifikasi', 'outlet', 'jadwalMaintenance']);
-
-    if (in_array($user->user_level, ['IT', 'GA Pusat', 'Keuangan'])) {
-        // Fetch all assets if user has higher access
-        $asets = $query->orderBy('aset_id', $sortOrder)->paginate(10);
-    } else {
-        // Fetch assets filtered by outlet or area if user has lower access
-        $asets = $query->where(function ($query) use ($user) {
-            if ($user->user_outlet_id) {
-                $query->where('outlet_id', $user->user_outlet_id);
-            }
-            if ($user->user_area_id) {
-                $query->where('area_id', $user->user_area_id);
-            }
-        })
-        ->orderBy('aset_id', $sortOrder)
-        ->paginate(10);
-    }
-
-    // Calculate usia_aset_in_months if necessary
-    // This loop can be omitted if the accessor is already defined in the model
-    foreach ($asets as $aset) {
-        $aset->usia_aset_in_months = $aset->usia_aset_in_months; 
-    }
-
-    return response()->json($asets);
-}
-
-
-public function getAset($id)
+    
+    
+    public function getAset($id)
 {
     $user = Auth::guard('api')->user();
 
