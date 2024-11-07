@@ -13,6 +13,10 @@ class PermintaanController extends Controller
     {
         return view('formPermintaanServiceGanti');
     }   
+    public function formAbaikanKondisiPage()
+    {
+        return view('formAbaikanKondisi');
+    }   
     public function formBarangHilangPage()
     {
         return view('formBarangHilang');

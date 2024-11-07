@@ -29,3 +29,4 @@ Route::get('resetPw/{id}', [AuthController::class, 'resetPwPage'])->name('resetP
 Route::get('parameterKesehatan/{id}', [AsetController::class, 'ParameterKesehatanPage'])->name('parameterKesehatan');
 Route::get('formPermintaanServiceGanti/{id}', [PermintaanController::class, 'formPermintaanServiceGantiPage'])->name('formPermintaanServiceGanti');
 Route::get('formBarangHilang/{id}', [PermintaanController::class, 'formBarangHilangPage'])->name('formBarangHilang');
+Route::get('formAbaikanKondisi/{id}', [PermintaanController::class, 'formAbaikanKondisiPage'])->name('formAbaikanKondisi');
