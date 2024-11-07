@@ -58,12 +58,10 @@
         </a>
     </div>
 </details>
-                    <form class="inline">
-                        <button type="submit" class="flex items-center text-white p-3 rounded-lg mb-2" id="logout">
-                            <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
-                            <span>Logout</span>
-                        </button>
-                    </form>
+<button type="button" class="flex items-center text-white p-3 rounded-lg mb-2 logout">
+    <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
+    <span>Logout</span>
+</button>
                 </ul>
             </div>
         </div>

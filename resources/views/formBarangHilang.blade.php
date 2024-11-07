@@ -58,12 +58,10 @@
         </a>
     </div>
 </details>
-                    <form class="inline">
-                        <button type="submit" class="flex items-center text-white p-3 rounded-lg mb-2" id="logout">
-                            <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
-                            <span>Logout</span>
-                        </button>
-                    </form>
+<button type="button" class="flex items-center text-white p-3 rounded-lg mb-2 logout">
+    <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
+    <span>Logout</span>
+</button>
                 </ul>
             </div>
         </div>
@@ -127,7 +125,7 @@
             <input type="text" name="permintaan_nama_area" id="permintaan_nama_area" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 bg-gray-200" placeholder="masukkan area pengaju aset" required readonly>
           </div>
         </div> -->
-        
+
         <div class="sm:col-span-1"> 
   <label for="permintaan_kategori" class="block text-sm font-medium leading-6 text-gray-900">Kategori Pengajuan</label>
   <div class="mt-2">
@@ -138,7 +136,7 @@
         <div class="sm:col-span-2"> 
           <label for="permintaan_tujuan" class="block text-sm font-medium leading-6 text-gray-900">Tujuan Ajuan</label>
           <div class="mt-2">
-            <textarea name="permintaan_tujuan" id="permintaan_tujuan" rows="4" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 " placeholder="masukkan tujuan dan alasan pengajuan aset" required></textarea>
+            <textarea name="permintaan_tujuan" id="permintaan_tujuan" rows="4" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 " placeholder="masukkan tujuan atau keterangan barang hilang" required></textarea>
           </div>
         </div>
 
