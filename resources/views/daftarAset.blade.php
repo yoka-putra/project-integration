@@ -377,77 +377,6 @@ searchInput.addEventListener('input', async function () {
 });
 
     fetchAsets();
-    tableBody.addEventListener('click', (e) => {
-    if (e.target.classList.contains('edit-button')) {
-        const user_id = e.target.dataset.user_id;
-        const user_full_name = e.target.dataset.user_full_name;
-        const user_name = e.target.dataset.user_name;
-        const user_email = e.target.dataset.user_email;
-        const user_level = e.target.dataset.user_level;
-        const user_outlet_id = e.target.dataset.user_outlet_id;
-
-        document.getElementById('edit_user_id').value = user_id;
-        document.getElementById('edit_user_full_name').value = user_full_name;
-        document.getElementById('edit_user_email').value = user_email;
-        document.getElementById('edit_user_level').value = user_level;
-        document.getElementById('edit_user_name').value = user_name;
-        document.getElementById('edit_user_outlet_id').value = user_outlet_id;
-        document.getElementById('editUserModal').classList.remove('hidden');
-    }
-});
-
-function closeEditModal() {
-    document.getElementById('editUserModal').classList.add('hidden');
-}
-
-document.getElementById('closeModalEdit').addEventListener('click', closeEditModal);
-
-    document.getElementById('editUserForm').addEventListener('submit', async (e) => {
-        e.preventDefault();
-
-        const token = localStorage.getItem('token');
-    if (!token) {
-        alert('Token tidak ditemukan. Harap login kembali.');
-        return;
-    }
-        const user_id = document.getElementById('edit_user_id').value;
-        const user_full_name = document.getElementById('edit_user_full_name').value;
-        const user_email = document.getElementById('edit_user_email').value;
-        const user_level = document.getElementById('edit_user_level').value;
-        const user_name = document.getElementById('edit_user_name').value;
-        const user_outlet_id = document.getElementById('edit_user_outlet_id').value;
-
-        try {
-            const response = await fetch(`http://127.0.0.1:8000/api/users/edit/${user_id}`, {
-                method: 'PUT',
-                headers: {
-                    'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    user_full_name: user_full_name,
-                    user_email: user_email,
-                    user_level: user_level,
-                    user_outlet_id: user_outlet_id,
-                    user_name: user_name,
-                })
-            });
-            if (!response.ok) {
-    const errorData = await response.json();
-    console.error('Error updating user:', errorData);
-    alert('Gagal memperbarui pengguna: ' + errorData.message);
-}
-            if (response.ok) {
-                await fetchUsers();
-                closeEditModal();
-            } else {
-                console.error('Error updating user');
-                alert('Gagal memperbarui pengguna.');
-            }
-        } catch (error) {
-            console.error('Error updating user:', error);
-        }
-    });
 
 function openModal() {
     document.getElementById('addUserModal').classList.remove('hidden');
@@ -457,47 +386,7 @@ function closeModal() {
     document.getElementById('addUserModal').classList.add('hidden');
 }
 
-document.getElementById('closeModalButton').addEventListener('click', closeModal);
-
-document.getElementById('addUserForm').addEventListener('submit', async function (event) {
-    event.preventDefault();
-
-    const password = document.getElementById('user_password').value;
-    const passwordConfirmation = document.getElementById('password_confirmation').value;
-
-    if (password !== passwordConfirmation) {
-        alert('Password dan Konfirmasi Password tidak sama.');
-        return; 
-    }
-
-    const formData = new FormData(this);
-    const token = getToken(); 
-
-    try {
-        const response = await fetch('http://127.0.0.1:8000/api/register', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Authorization': `Bearer ${token}`, 
-                'X-Requested-With': 'XMLHttpRequest'
-            },
-        });
-        const data = await response.json();
-
-        if (data.success) {
-            alert(data.message);
-            closeModal(); 
-            fetchUsers();
-        } else {
-            alert(data.message);
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Terjadi kesalahan saat menambahkan user.');
-    }
-});
-
-document.getElementById('addUserBtn').addEventListener('click', openModal);
+// document.getElementById('addUserBtn').addEventListener('click', openModal);
 });
 
 

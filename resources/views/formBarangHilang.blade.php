@@ -89,7 +89,7 @@
   <div class="space-y-12">
     <div class="border-b border-gray-900/10 pb-12">
       <div class="bg-gray-200 p-6 rounded-lg shadow-md">
-        <h2 class="text-base font-semibold leading-7 text-gray-900">Formulir Pengajuan Service/ganti</h2>
+        <h2 class="text-base font-semibold leading-7 text-gray-900">Formulir Laporan Barang Hilang</h2>
       </div>
 
       <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-2">
@@ -127,15 +127,11 @@
             <input type="text" name="permintaan_nama_area" id="permintaan_nama_area" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 bg-gray-200" placeholder="masukkan area pengaju aset" required readonly>
           </div>
         </div> -->
-
+        
         <div class="sm:col-span-1"> 
   <label for="permintaan_kategori" class="block text-sm font-medium leading-6 text-gray-900">Kategori Pengajuan</label>
   <div class="mt-2">
-    <select name="permintaan_kategori" id="permintaan_kategori" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 bg-white-200" required>
-      <option value="" disabled selected>Pilih Kategori Pengajuan</option> 
-      <option value="Pengajuan Service Aset">Pengajuan Service Aset</option>
-      <option value="Pengajuan Ganti Aset">Pengajuan Ganti Aset</option>
-    </select>
+    <input type="text" name="permintaan_kategori" id="permintaan_kategori" value="Laporan Barang Hilang" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 bg-gray-200" readonly>
   </div>
 </div>
 

@@ -13,6 +13,10 @@ class PermintaanController extends Controller
     {
         return view('formPermintaanServiceGanti');
     }   
+    public function formBarangHilangPage()
+    {
+        return view('formBarangHilang');
+    }   
 
     public function getAllRequest()
     {

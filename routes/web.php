@@ -28,3 +28,4 @@ Route::get('scanQr', [AsetController::class, 'scanQrPage'])->name('scanQr');
 Route::get('resetPw/{id}', [AuthController::class, 'resetPwPage'])->name('resetPw');
 Route::get('parameterKesehatan/{id}', [AsetController::class, 'ParameterKesehatanPage'])->name('parameterKesehatan');
 Route::get('formPermintaanServiceGanti/{id}', [PermintaanController::class, 'formPermintaanServiceGantiPage'])->name('formPermintaanServiceGanti');
+Route::get('formBarangHilang/{id}', [PermintaanController::class, 'formBarangHilangPage'])->name('formBarangHilang');

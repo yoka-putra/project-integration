@@ -143,7 +143,6 @@
           </div>
         </div>
 
-
       </div>
     </div>
   </div>
@@ -235,6 +234,35 @@ document.addEventListener('DOMContentLoaded', function() {
     toggleButton.addEventListener('click', () => {
         sidebar.classList.toggle('sidebar-open');
         sidebar.classList.toggle('sidebar-closed');
+    });
+});
+
+document.querySelectorAll('.logout').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault(); // Mencegah submit form
+        e.stopPropagation(); // Menghentikan event bubbling
+        
+        const token = localStorage.getItem('token');
+        fetch('http://127.0.0.1:8000/api/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Successfully logged out') {
+                localStorage.removeItem('user_name');
+                localStorage.removeItem('token');
+                localStorage.removeItem('user_level');
+                alert('Anda berhasil logout!');
+                window.location.href = '/login';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
 });
 
