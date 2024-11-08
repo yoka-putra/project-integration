@@ -13,19 +13,7 @@
     body {
         font-family: Arial, sans-serif;
     }
-    .sidebar-open {
-        max-width: 800px; /* Lebar sidebar saat dibuka */
-        transform: translateX(0); /* Muncul di layar */
-        visibility: visible; /* Sidebar terlihat */
-    }
-    .sidebar-closed {
-        max-width: 0; /* Sidebar tersembunyi */
-        transform: translateX(-100%); /* Geser keluar layar */
-        visibility: hidden; /* Tidak terlihat */
-    }
-    .transition-all {
-        transition: all 0.3s ease;
-    }
+   
     .container {
         display: flex;
         align-items: flex-start;
@@ -102,61 +90,10 @@
     }
 </style>
 </head>
+
 <body class="bg-gray-100 h-screen text-black">
     <div class="flex w-screen h-screen">
-        <!-- Sidebar -->
-        <div id="sidebar" class="h-screen bg-orange-500 transition-all sidebar-closed">
-            <div class="p-4">
-                <h1 class="text-white text-2xl font-bold">SSB</h1>
-                <h2 class="text-white text-lg mt-2">Spesial Soto Boyolali</h2>
-                <h2 class="text-white text-lg">Hj. Hesti Widodo</h2>
-                <hr class="border-white my-4">
-                <ul class="mt-4 text-white">
-                    <form class="inline">
-                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                  
-                    <form class="inline">
-    <a href="{{ route('scanQr') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
-        <span class="mr-2"><i class="bi bi-camera"></i></span> 
-        <span>Scan Qr Code</span>
-    </a>
-</form>
-                    <details id="masterMenu" class="group hidden">
-    <summary class="flex items-center cursor-pointer bg-orange-600 p-3 rounded-lg mb-2">
-        <span class="mr-2"><i class="bi bi-wrench"></i></span>
-        <span>Master</span>
-        <i class="bi bi-chevron-down ml-auto transition-transform transform group-open:rotate-180"></i>
-    </summary>
-    <div class="pl-6 mt-2">
-        <a href="{{ route('masterUser') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
-            <span class="mr-2"><i class="bi bi-people"></i></span>
-            <span>User</span>
-        </a>
-        <a href="{{ route('masterAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
-            <span class="mr-2"><i class="bi bi-folder"></i></span>
-            <span>Aset</span>
-        </a>
-    </div>
-</details>
-<button type="button" class="flex items-center text-white p-3 rounded-lg mb-2 logout">
-    <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
-    <span>Logout</span>
-</button>
-                </ul>
-            </div>
-        </div>
-
-        <div class="grow p-6" id="content">
-    <div>
-    <div class="bg-white rounded-xl p-6 flex items-center justify-between mb-4">
-            <div class="flex items-center">
-                <ion-icon id="menuToggleBtn" name="menu" class="text-xl cursor-pointer mr-2"></ion-icon>
-                <h1 class="text-xl font-semibold">Asset Pos Manager</h1>
-            </div>
-            <div class="flex items-center">
-                <i class="bi bi-person-fill mr-2"></i>
-                <span id="user_name" class="text-xl font-semibold"></span>
-            </div>
-        </div>
+   @include('components.sidenav', ['isOpen' => true])
         <div class="overflow-hidden bg-white shadow sm:rounded-lg mt-4 p-6">
     <div class="flex justify-between items-center mb-4">
         <h1 class="text-xl font-bold">Detail Aset</h1>
@@ -261,66 +198,6 @@
   function formBarangHilang(asetId) {
         window.location.href = `/formBarangHilang/${asetId}`;
     }
-
-
-                // Ambil user_level dari localStorage
-const userLevel = localStorage.getItem('user_level');
-
-// Ambil elemen menu
-const masterMenu = document.getElementById('masterMenu');
-
-// Cek apakah user_level adalah 'IT' atau 'GA Pusat'
-if (userLevel === 'IT' || userLevel === 'GA Pusat') {
-    // Jika ya, tampilkan menu
-    masterMenu.classList.remove('hidden');
-} else {
-    // Jika tidak, sembunyikan menu
-    masterMenu.classList.add('hidden');
-}
-
-
-document.querySelectorAll('.logout').forEach(button => {
-    button.addEventListener('click', function(e) {
-        e.preventDefault(); // Mencegah submit form
-        e.stopPropagation(); // Menghentikan event bubbling
-        
-        const token = localStorage.getItem('token');
-        fetch('http://127.0.0.1:8000/api/logout', {
-            method: 'POST',
-            headers: {
-                'Authorization': 'Bearer ' + token,
-                'Content-Type': 'application/json'
-            }
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.message === 'Successfully logged out') {
-                localStorage.removeItem('user_name');
-                localStorage.removeItem('token');
-                localStorage.removeItem('user_level');
-                alert('Anda berhasil logout!');
-                window.location.href = '/login';
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-});
-
-document.addEventListener('DOMContentLoaded', function() {
-    const user_name = localStorage.getItem('user_name') || 'Pengguna';
-    document.getElementById('user_name').innerText = user_name;
-
-    let toggleButton = document.querySelector('#menuToggleBtn');
-    let sidebar = document.querySelector('#sidebar');
-
-    document.getElementById('menuToggleBtn').addEventListener('click', function () {
-    const sidebar = document.getElementById('sidebar');
-    sidebar.classList.toggle('sidebar-closed');
-    sidebar.classList.toggle('sidebar-open');
-});
-});
 
 function getAssetIdFromPath() {
     const path = window.location.pathname; 

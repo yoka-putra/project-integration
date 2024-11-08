@@ -148,7 +148,5 @@ class PermintaanController extends Controller
                 'error' => $e->getMessage(),
             ], 500);
         }
-    }
-    
- 
+    }    
 }

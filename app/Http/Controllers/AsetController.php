@@ -16,6 +16,10 @@ class AsetController extends Controller
     {
         return view('masterAset');
     }
+    public function DashboardPage()
+    {
+        return view('dashboard');
+    }
     public function parameterKesehatanPage()
     {
         return view('parameterKesehatan');

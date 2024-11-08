@@ -30,3 +30,5 @@ Route::get('parameterKesehatan/{id}', [AsetController::class, 'ParameterKesehata
 Route::get('formPermintaanServiceGanti/{id}', [PermintaanController::class, 'formPermintaanServiceGantiPage'])->name('formPermintaanServiceGanti');
 Route::get('formBarangHilang/{id}', [PermintaanController::class, 'formBarangHilangPage'])->name('formBarangHilang');
 Route::get('formAbaikanKondisi/{id}', [PermintaanController::class, 'formAbaikanKondisiPage'])->name('formAbaikanKondisi');
+
+Route::get('dashboard', [AsetController::class, 'DashboardPage'])->name('dashboard');
