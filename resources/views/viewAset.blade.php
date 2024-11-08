@@ -150,7 +150,7 @@
             <tr><th>PIC</th><td id="aset-pic">-</td></tr>
             <tr><th>Kondisi Awal</th><td id="aset-kondisi">-</td></tr>
             <tr><th>Tanggal Pembelian</th><td id="aset-tgl-beli">-</td></tr>
-            <tr><th>Umur aset</th><td id="data-umur-aset">-</td></tr>
+            <tr><th>Umur aset / Bulan</th><td id="data-umur-aset">-</td></tr>
             <tr><th>Jadwal Maintenance</th><td id="jadwal-maintenance">-</td></tr>
             <tr><th>Jenis Maintenance</th><td id="jenis_maintenance">-</td></tr>
             <tr><th>Riwayat Perubahan</th><td id="aset-riwayat">-</td></tr>
@@ -167,8 +167,8 @@
 <div class="text-right mt-6 mb-6 pr-6">
     <button 
         id="btn-maintenance" 
-        class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-red-500"
-        onclick="parameterKesehatan(asetId)"
+        class="px-4 py-2 bg-yellow-500 text-white rounded hover:bg-red-500 hidden"
+        onclick="parameterKesehatan(assetId)"
     >
         Maintenance Aset
     </button>
@@ -198,30 +198,33 @@ function parameterKesehatan(asetId) {
     window.location.href = `/parameterKesehatan/${asetId}`;
 }
                 
-document.getElementById('logout').addEventListener('click', function(e) {
-    e.preventDefault(); 
-    const token = localStorage.getItem('token');
-    fetch('http://127.0.0.1:8000/api/logout', {
-        method: 'POST',
-        headers: {
-            'Authorization': 'Bearer ' + token,
-            'Content-Type': 'application/json'
-        }
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.message === 'Successfully logged out') {
-            localStorage.removeItem('user_name');
-            localStorage.removeItem('token');
-            alert('Anda berhasil logout!');
-            window.location.href = '/login';
-        }
-    })
-    .catch(error => {
-        console.error('Error:', error);
+document.querySelectorAll('.logout').forEach(button => {
+    button.addEventListener('click', function(e) {
+        e.preventDefault(); 
+        e.stopPropagation();
+        
+        const token = localStorage.getItem('token');
+        fetch('http://127.0.0.1:8000/api/logout', {
+            method: 'POST',
+            headers: {
+                'Authorization': 'Bearer ' + token,
+                'Content-Type': 'application/json'
+            }
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.message === 'Successfully logged out') {
+                localStorage.removeItem('user_name');
+                localStorage.removeItem('token');
+                alert('Anda berhasil logout!');
+                window.location.href = '/login';
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
     });
 });
-
 document.addEventListener('DOMContentLoaded', function() {
     const user_name = localStorage.getItem('user_name') || 'Pengguna';
     document.getElementById('user_name').innerText = user_name;
@@ -234,7 +237,6 @@ document.addEventListener('DOMContentLoaded', function() {
         sidebar.classList.toggle('sidebar-closed');
     });
 });
-
 
 function getAssetIdFromPath() {
     const path = window.location.pathname; 
@@ -283,19 +285,14 @@ if (assetId) {
         document.getElementById('klasifikasi-nilai-ekonomis').innerText = aset.klasifikasi.klasifikasi_nilai_ekonomis || '-';
         document.getElementById('asset-spesifikasi').innerText = aset.aset_spesifikasi || '-';
         document.getElementById('nilai-penyusutan').innerText = aset.nilai_penyusutan || '-';
-        // document.getElementById('parameter-kesehatan-aset').innerText = aset.klasifikasi.parameter_kesehatan_aset || '-';
-        // Get the maintenance schedule element
-const maintenanceElement = document.getElementById('jadwal-maintenance');
-
-// Check if there's a jadwal_maintenance array and if it has items
-if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
-    // Extract the dates from the jadwal_maintenance array
-    const maintenanceDates = aset.jadwal_maintenance.map(jadwal => jadwal.tanggal_maintenance).join(', ');
-    maintenanceElement.innerText = maintenanceDates;
-} else {
-    maintenanceElement.innerText = '-'; // Display '-' if there are no maintenance records
-}
-
+        
+        const maintenanceElement = document.getElementById('jadwal-maintenance');
+        if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
+            const maintenanceDates = aset.jadwal_maintenance.map(jadwal => jadwal.tanggal_maintenance).join(', ');
+            maintenanceElement.innerText = maintenanceDates;
+        } else {
+            maintenanceElement.innerText = '-'; 
+        }
 
         const umurAsetElement = document.getElementById('data-umur-aset'); 
         if (umurAsetElement) {
@@ -303,6 +300,13 @@ if (aset.jadwal_maintenance && aset.jadwal_maintenance.length > 0) {
         } else {
             console.error('Element with ID "umur-aset" not found.');
         }
+
+        // Show button if aset_status is neither "Baik" nor "Non-maintenance"
+// Show button only if aset_status is "Baik" or "Non-maintenance"
+if (aset.aset_status === 'Baik' || aset.aset_status === 'Non-maintenance'|| aset.aset_status === 'baik') {
+    document.getElementById('btn-maintenance').classList.remove('hidden');
+}
+
     })
     .catch(error => console.error('Error fetching asset data:', error)); 
 } else {

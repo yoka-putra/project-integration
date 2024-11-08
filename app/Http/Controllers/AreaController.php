@@ -57,6 +57,46 @@ class AreaController extends Controller
         ], 200);
     }
 
+    //create menggunakan array
+
+    // public function createArea(Request $request)
+    // {
+    //     $user = Auth::guard('api')->user();
+    
+    //     if (!$user) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Unauthorized: Invalid token',
+    //         ], 401);
+    //     }
+    
+    //     $validator = Validator::make($request->all(), [
+    //         'area_name' => 'required|array',
+    //         'area_name.*' => 'string|max:255|unique:area,area_name', // pastikan tabelnya "area"
+    //     ]);
+    
+    //     if ($validator->fails()) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Validation error',
+    //             'errors' => $validator->errors(),
+    //         ], 400);
+    //     }
+    
+    //     $areas = [];
+    //     foreach ($request->input('area_name') as $name) {
+    //         $areas[] = Area::create([
+    //             'area_name' => $name,
+    //         ]);
+    //     }
+    
+    //     return response()->json([
+    //         'success' => true,
+    //         'message' => 'Areas successfully created',
+    //         'data' => $areas,
+    //     ], 200);
+    // }
+
     public function getArea($id)
     {
         $area = Area::with('outlets')->find($id);

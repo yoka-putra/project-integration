@@ -119,19 +119,19 @@
           </div>
         </div>
 
-        <!-- <div class="sm:col-span-1"> 
-          <label for="permintaan_nama_area" class="block text-sm font-medium leading-6 text-gray-900">Nama Area Pengaju</label>
-          <div class="mt-2">
-            <input type="text" name="permintaan_nama_area" id="permintaan_nama_area" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 bg-gray-200" placeholder="masukkan area pengaju aset" required readonly>
-          </div>
-        </div> -->
-
         <div class="sm:col-span-1"> 
   <label for="permintaan_kategori" class="block text-sm font-medium leading-6 text-gray-900">Kategori Pengajuan</label>
   <div class="mt-2">
     <input type="text" name="permintaan_kategori" id="permintaan_kategori" value="Laporan Barang Hilang" class="block w-full rounded-md border-0 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-2 bg-gray-200" readonly>
   </div>
 </div>
+
+<div class="sm:col-span-1">
+          <label for="permintaan_lampiran" class="block text-sm font-medium leading-6 text-gray-900">Lampiran (Bukti Barang Hilang)</label>
+          <div class="mt-2">
+            <input type="file" name="permintaan_lampiran" id="permintaan_lampiran" class="block w-full text-gray-900 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-yellow-600 file:text-white hover:file:bg-yellow-700" accept=".jpg,.jpeg,.png,.pdf">
+          </div>
+        </div>
 
         <div class="sm:col-span-2"> 
           <label for="permintaan_tujuan" class="block text-sm font-medium leading-6 text-gray-900">Tujuan Ajuan</label>
@@ -209,6 +209,7 @@ document.addEventListener("DOMContentLoaded", function () {
       permintaan_status: formData.get('permintaan_status'), 
       permintaan_tujuan: formData.get('permintaan_tujuan'),
       permintaan_kuantitas: formData.get('permintaan_kuantitas'), 
+      
     };
 
     fetch('http://127.0.0.1:8000/api/request/create', {

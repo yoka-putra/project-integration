@@ -10,7 +10,7 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        .sidebar-open {
+         .sidebar-open {
             max-width: 800px; /* Lebar sidebar saat dibuka */
             transform: translateX(0); /* Muncul di layar */
             visibility: visible; /* Sidebar terlihat */
@@ -25,6 +25,7 @@
         }
     </style>
 </head>
+
 <body class="bg-gray-100 h-screen text-black">
     <div class="flex w-screen h-screen">
         <!-- Sidebar -->
@@ -36,12 +37,13 @@
                 <hr class="border-white my-4">
                 <ul class="mt-4 text-white">
                     <form class="inline">
-                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">            
-                       <span class="mr-2">
-                        <i class="bi bi-list-task"></i>
-                      </span>             
-                      <span>Daftar Aset</span>         </a>                     </form>                     <form class="inline">     <a class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">         <span class="mr-2"><i class="bi bi-camera"></i></span>          <span>Scan Qr Code</span>     </a> </form>
-                                      <details id="masterMenu" class="group hidden">
+                    <form class="inline">                         <a href="{{ route('daftarAset') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">             <span class="mr-2"><i class="bi bi-list-task"></i></span>             <span>Daftar Aset</span>         </a>                     </form>                       <form class="inline">
+    <a href="{{ route('scanQr') }}" class="flex items-center text-white p-2 rounded-lg hover:bg-orange-400">
+        <span class="mr-2"><i class="bi bi-camera"></i></span> 
+        <span>Scan Qr Code</span>
+    </a>
+</form>
+                    <details id="masterMenu" class="group hidden">
     <summary class="flex items-center cursor-pointer bg-orange-600 p-3 rounded-lg mb-2">
         <span class="mr-2"><i class="bi bi-wrench"></i></span>
         <span>Master</span>
@@ -58,10 +60,12 @@
         </a>
     </div>
 </details>
-<button type="button" class="flex items-center text-white p-3 rounded-lg mb-2 logout">
+
+    <button type="button" class="flex items-center text-white p-3 rounded-lg mb-2 logout">
     <span class="mr-2"><i class="bi bi-box-arrow-right"></i></span>
     <span>Logout</span>
 </button>
+
                 </ul>
             </div>
         </div>
@@ -137,11 +141,11 @@
           <label class="block text-sm font-medium leading-6 text-gray-900">Aset Kondisi Awal</label>
           <div class="mt-2">
             <div class="flex items-center">
-              <input type="radio" id="kondisi_baru" name="aset_kondisi" value="baru" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="kondisi_baru" name="aset_kondisi" value="Baru" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="kondisi_baru" class="ml-2 block text-sm text-gray-900">Baru</label>
             </div>
             <div class="flex items-center mt-2">
-              <input type="radio" id="kondisi_bekas" name="aset_kondisi" value="bekas" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="kondisi_bekas" name="aset_kondisi" value="Bekas" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="kondisi_bekas" class="ml-2 block text-sm text-gray-900">Bekas</label>
             </div>
           </div>
@@ -158,11 +162,11 @@
           <label class="block text-sm font-medium leading-6 text-gray-900">Status Aset</label>
           <div class="mt-2">
             <div class="flex items-center">
-              <input type="radio" id="status_baik" name="aset_status" value="baik" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="status_baik" name="aset_status" value="Baik" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="status_baik" class="ml-2 block text-sm text-gray-900">Baik</label>
             </div>
             <div class="flex items-center mt-2">
-              <input type="radio" id="status_buruk" name="aset_status" value="buruk" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="status_buruk" name="aset_status" value="Buruk" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="status_buruk" class="ml-2 block text-sm text-gray-900">Buruk</label>
             </div>
           </div>

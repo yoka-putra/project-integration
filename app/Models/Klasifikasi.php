@@ -27,4 +27,8 @@ class Klasifikasi extends Model
     {
         return $this->hasMany(JadwalMaintenance::class, 'klasifikasi_id', 'klasifikasi_id');
     }
+    public function asets()
+    {
+        return $this->hasMany(Aset::class, 'klasifikasi_id');
+    }
 }

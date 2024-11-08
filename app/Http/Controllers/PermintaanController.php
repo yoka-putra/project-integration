@@ -71,74 +71,84 @@ class PermintaanController extends Controller
     }
 
     public function createRequest(Request $request)
-{
-    try {
-        $user = Auth::guard('api')->user();
-
-        if (!$user) {
+    {
+        try {
+            $user = Auth::guard('api')->user();
+    
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized: Invalid token',
+                ], 401);
+            }
+    
+            // Validasi data request
+            $request->validate([
+                'permintaan_nama_outlet' => 'required|string',
+                'permintaan_nama_area' => 'nullable|string',
+                'permintaan_tgl_pengajuan' => 'required|date',
+                'permintaan_kategori' => 'required|string',
+                'permintaan_status' => 'nullable|string',
+                'permintaan_tujuan' => 'required|string',
+                'permintaan_kuantitas' => 'nullable|integer',
+                'permintaan_aset' => 'required|string', // hanya nama aset sebagai input
+                'permintaan_keterangan' => 'nullable|string',
+                'lampiran' => 'nullable|file|mimes:jpeg,png,jpg,gif,pdf|max:2048', // Validasi untuk file lampiran
+            ]);
+    
+            // Mengambil ID aset berdasarkan nama yang diberikan
+            $aset = Aset::where('aset_name', $request->permintaan_aset)->first();
+    
+            if (!$aset) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Aset not found',
+                ], 404);
+            }
+    
+            // Menangani upload file jika ada
+            $lampiranPath = null;
+            if ($request->hasFile('lampiran')) {
+                // Meng-upload file dan mendapatkan path-nya
+                $lampiranPath = $request->file('lampiran')->store('lampiran_files', 'public');
+            }
+    
+            // Membuat permintaan baru dengan user_id otomatis dari user yang sedang login
+            $permintaan = Permintaan::create([
+                'permintaan_nama_pengaju' => $user->user_full_name,
+                'permintaan_nama_outlet' => $request->permintaan_nama_outlet,
+                'permintaan_nama_area' => $request->permintaan_nama_area,
+                'permintaan_tgl_pengajuan' => $request->permintaan_tgl_pengajuan,
+                'permintaan_kategori' => $request->permintaan_kategori,
+                'permintaan_status' => $request->permintaan_status,
+                'permintaan_tujuan' => $request->permintaan_tujuan,
+                'permintaan_kuantitas' => $request->permintaan_kuantitas,
+                'permintaan_keterangan' => $request->permintaan_keterangan,
+                'user_id' => $user->user_id, // otomatis dari user yang login
+                'aset_id' => $aset->aset_id, // menyimpan ID aset
+                'lampiran' => $lampiranPath, // Menyimpan path file lampiran
+            ]);
+    
+            return response()->json([
+                'success' => true,
+                'data' => $permintaan,
+            ], 200);
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Unauthorized: Invalid token',
-            ], 401);
-        }
-
-        // Validasi data request
-        $request->validate([
-            'permintaan_nama_outlet' => 'required|string',
-            'permintaan_nama_area' => 'nullable|string',
-            'permintaan_tgl_pengajuan' => 'required|date',
-            'permintaan_kategori' => 'required|string',
-            'permintaan_status' => 'nullable|string',
-            'permintaan_tujuan' => 'required|string',
-            'permintaan_kuantitas' => 'nullable|integer',
-            'permintaan_aset' => 'required|string', // hanya nama aset sebagai input
-            'permintaan_keterangan' => 'nullable|string',
-        ]);
-
-        // Mengambil ID aset berdasarkan nama yang diberikan
-        $aset = Aset::where('aset_name', $request->permintaan_aset)->first();
-
-        if (!$aset) {
+                'message' => 'Validation Error',
+                'errors' => $e->errors(),
+            ], 422);
+    
+        } catch (\Exception $e) {
             return response()->json([
                 'success' => false,
-                'message' => 'Aset not found',
-            ], 404);
+                'message' => 'An error occurred while creating the request.',
+                'error' => $e->getMessage(),
+            ], 500);
         }
-
-        // Membuat permintaan baru dengan user_id otomatis dari user yang sedang login
-        $permintaan = Permintaan::create([
-            'permintaan_nama_pengaju' => $user->user_full_name,
-            'permintaan_nama_outlet' => $request->permintaan_nama_outlet,
-            'permintaan_nama_area' => $request->permintaan_nama_area,
-            'permintaan_tgl_pengajuan' => $request->permintaan_tgl_pengajuan,
-            'permintaan_kategori' => $request->permintaan_kategori,
-            'permintaan_status' => $request->permintaan_status,
-            'permintaan_tujuan' => $request->permintaan_tujuan,
-            'permintaan_kuantitas' => $request->permintaan_kuantitas,
-            'permintaan_keterangan' => $request->permintaan_keterangan,
-            'user_id' => $user->user_id, // otomatis dari user yang login
-            'aset_id' => $aset->aset_id, // menyimpan ID aset
-        ]);
-
-        return response()->json([
-            'success' => true,
-            'data' => $permintaan,
-        ], 200);
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Validation Error',
-            'errors' => $e->errors(),
-        ], 422);
-
-    } catch (\Exception $e) {
-        return response()->json([
-            'success' => false,
-            'message' => 'An error occurred while creating the request.',
-            'error' => $e->getMessage(),
-        ], 500);
     }
-}
+    
  
 }

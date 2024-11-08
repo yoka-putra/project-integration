@@ -76,6 +76,47 @@ class OutletController extends Controller
         ], 200);
     }
 
+// create menggunakan array  
+//   public function createOutlet(Request $request)
+// {
+//     $user = Auth::guard('api')->user();
+
+//     if (!$user) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => 'Unauthorized: Invalid token',
+//         ], 401);
+//     }
+
+//     $validator = Validator::make($request->all(), [
+//         'outlets' => 'required|array',
+//         'outlets.*.outlet_name' => 'required|string|max:255|unique:outlet,outlet_name',
+//         'outlets.*.outlet_area' => 'nullable|integer|exists:area,area_id',
+//     ]);
+
+//     if ($validator->fails()) {
+//         return response()->json([
+//             'success' => false,
+//             'message' => 'Validation error',
+//             'errors' => $validator->errors(),
+//         ], 400);
+//     }
+
+//     $outlets = [];
+//     foreach ($request->input('outlets') as $outletData) {
+//         $outlets[] = Outlet::create([
+//             'outlet_name' => $outletData['outlet_name'],
+//             'outlet_area' => $outletData['outlet_area'] ?? null,
+//         ]);
+//     }
+
+//     return response()->json([
+//         'success' => true,
+//         'message' => 'Outlets successfully created',
+//         'data' => $outlets,
+//     ], 200);
+// }
+
     public function getOutlet($id)
     {
         $user = Auth::guard('api')->user();

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use App\Models\JadwalMaintenance;
@@ -9,7 +8,7 @@ use Illuminate\Support\Facades\Validator;
 
 class JadwalMaintenanceController extends Controller
 {
-    public function Jadwal(Request $request)
+    public function Jadwal(Request $request) 
     {
         $user = Auth::guard('api')->user();
 
@@ -40,9 +39,11 @@ class JadwalMaintenanceController extends Controller
             'tanggal_maintenance' => $tanggalMaintenance,
         ]);
 
+        JadwalMaintenance::updateMaintenanceSchedule();
+
         return response()->json([
             'success' => true,
             'data' => $jadwal
-        ], 201);
+        ], 200);
     }
 }

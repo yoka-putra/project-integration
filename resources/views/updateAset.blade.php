@@ -135,11 +135,11 @@
           <label class="block text-sm font-medium leading-6 text-gray-900">Aset Kondisi Awal</label>
           <div class="mt-2">
             <div class="flex items-center">
-              <input type="radio" id="kondisi_baru" name="aset_kondisi" value="baru" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="kondisi_baru" name="aset_kondisi" value="Baru" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="kondisi_baru" class="ml-2 block text-sm text-gray-900">Baru</label>
             </div>
             <div class="flex items-center mt-2">
-              <input type="radio" id="kondisi_bekas" name="aset_kondisi" value="bekas" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="kondisi_bekas" name="aset_kondisi" value="Bekas" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="kondisi_bekas" class="ml-2 block text-sm text-gray-900">Bekas</label>
             </div>
           </div>
@@ -156,11 +156,11 @@
           <label class="block text-sm font-medium leading-6 text-gray-900">Status Aset</label>
           <div class="mt-2">
             <div class="flex items-center">
-              <input type="radio" id="status_baik" name="aset_status" value="baik" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="status_baik" name="aset_status" value="Baik" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="status_baik" class="ml-2 block text-sm text-gray-900">Baik</label>
             </div>
             <div class="flex items-center mt-2">
-              <input type="radio" id="status_buruk" name="aset_status" value="buruk" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
+              <input type="radio" id="status_buruk" name="aset_status" value="Buruk" class="h-4 w-4 text-blue-600 border-gray-300 focus:ring-blue-500" required>
               <label for="status_buruk" class="ml-2 block text-sm text-gray-900">Buruk</label>
             </div>
           </div>
@@ -369,14 +369,14 @@ function populateForm(asset) {
     document.getElementById('aset_name').value = asset.aset_name || '';
     document.getElementById('aset_merk').value = asset.aset_merk || '';
     document.getElementById('aset_spesifikasi').value = asset.aset_spesifikasi || '';
-    if (asset.aset_kondisi === 'baru') {
+    if (asset.aset_kondisi === 'Baru') {
         document.getElementById('kondisi_baru').checked = true;
     } else {
         document.getElementById('kondisi_bekas').checked = true;
     }
 
     document.getElementById('aset_tgl_pembelian').value = asset.aset_tgl_pembelian || '';
-    if (asset.aset_status === 'baik') {
+    if (asset.aset_status === 'Baik') {
         document.getElementById('status_baik').checked = true;
     } else {
         document.getElementById('status_buruk').checked = true;
